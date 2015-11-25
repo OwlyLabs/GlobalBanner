@@ -16,7 +16,5 @@ Pod::Spec.new do |s|
 
   s.xcconfig = {
        'WARNING_CFLAGS' => '-Wno-shorten-64-to-32 -Wno-logical-op-parentheses'
-       'CLANG_CXX_LANGUAGE_STANDARD' => 'c++11',
-       'CLANG_CXX_LIBRARY' => 'libc++'
   }
 end
