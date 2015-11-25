@@ -14,7 +14,7 @@
 
 @implementation NewGlobalBannerController
 static NewGlobalBannerController *instance = nil;
-static BOOL debug = YES;
+static BOOL debug = NO;
 static NSString *plistDataFileName = @"GlobalBannerData";
 static NSString *plistCheckFileName = @"CheckGlobalBanner";
 static int idRecomended = 5;
