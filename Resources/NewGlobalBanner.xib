@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+        </mutableArray>
+        <mutableArray key="HelveticaNeueLights.ttc">
+            <string>HelveticaNeue-Light</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewGlobalBanner">
+            <connections>
+                <outlet property="backgroundView" destination="3nu-np-Lal" id="gom-7W-Fbj"/>
+                <outlet property="carousel" destination="zBD-NM-nvw" id="ASm-eJ-Ahz"/>
+                <outlet property="closeButton" destination="KmM-1R-jbG" id="Tgg-7Z-zOC"/>
+                <outlet property="titleLabel" destination="MRB-Pn-mA5" id="MEh-u1-7MN"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3nu-np-Lal">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <animations/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bx9-ku-xR0">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zBD-NM-nvw" customClass="iCarousel">
+                            <rect key="frame" x="20" y="40" width="560" height="555"/>
+                            <animations/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <outlet property="dataSource" destination="-1" id="lKO-za-gs2"/>
+                                <outlet property="delegate" destination="-1" id="ShS-Ot-UJz"/>
+                            </connections>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eVS-El-9aD">
+                            <rect key="frame" x="100" y="60" width="400" height="40"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KmM-1R-jbG">
+                                    <rect key="frame" x="318" y="0.0" width="40" height="40"/>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="40" id="Rda-Fe-xDC"/>
+                                        <constraint firstAttribute="width" constant="40" id="heO-yI-Isy"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                    <state key="normal" image="CloseButtonIphone.png">
+                                        <color key="titleColor" red="0.086274509799999996" green="0.6588235294" blue="0.57254901960000004" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="close:" destination="-1" eventType="touchUpInside" id="AFI-Bb-jdr"/>
+                                    </connections>
+                                </button>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="РЕКОМЕНДУЕМ" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MRB-Pn-mA5">
+                                    <rect key="frame" x="99" y="0.0" width="202" height="40"/>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="40" id="Fgd-qR-6dr"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="27"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <animations/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="MRB-Pn-mA5" firstAttribute="centerX" secondItem="eVS-El-9aD" secondAttribute="centerX" id="17C-Az-Flh"/>
+                                <constraint firstItem="MRB-Pn-mA5" firstAttribute="centerY" secondItem="eVS-El-9aD" secondAttribute="centerY" id="7Ck-vy-rsq"/>
+                                <constraint firstAttribute="width" constant="400" id="ERz-6Z-Ng4"/>
+                                <constraint firstItem="MRB-Pn-mA5" firstAttribute="bottom" secondItem="KmM-1R-jbG" secondAttribute="bottom" id="Zsa-iI-qeN"/>
+                                <constraint firstItem="MRB-Pn-mA5" firstAttribute="leading" secondItem="eVS-El-9aD" secondAttribute="leading" constant="10" id="fO3-pR-8l4"/>
+                                <constraint firstItem="KmM-1R-jbG" firstAttribute="top" secondItem="eVS-El-9aD" secondAttribute="top" id="l9t-KR-awI"/>
+                                <constraint firstAttribute="trailing" secondItem="KmM-1R-jbG" secondAttribute="trailing" constant="-2" id="qdx-ei-8Fh"/>
+                                <constraint firstItem="KmM-1R-jbG" firstAttribute="leading" secondItem="MRB-Pn-mA5" secondAttribute="trailing" constant="17" id="uM7-HF-PVd"/>
+                                <constraint firstItem="MRB-Pn-mA5" firstAttribute="top" secondItem="KmM-1R-jbG" secondAttribute="top" id="vUS-Zg-6fe"/>
+                            </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="Zsa-iI-qeN"/>
+                                    <exclude reference="fO3-pR-8l4"/>
+                                    <exclude reference="qdx-ei-8Fh"/>
+                                </mask>
+                            </variation>
+                        </view>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="eVS-El-9aD" firstAttribute="centerY" secondItem="Bx9-ku-xR0" secondAttribute="centerY" constant="-400" id="0MF-Wq-uPJ">
+                            <variation key="heightClass=regular-widthClass=regular" constant="-350"/>
+                        </constraint>
+                        <constraint firstItem="zBD-NM-nvw" firstAttribute="top" secondItem="Bx9-ku-xR0" secondAttribute="top" priority="750" constant="20" id="KSg-tX-Ukc"/>
+                        <constraint firstAttribute="bottom" secondItem="zBD-NM-nvw" secondAttribute="bottom" priority="750" constant="5" id="Ona-ua-Oqt"/>
+                        <constraint firstItem="zBD-NM-nvw" firstAttribute="leading" secondItem="Bx9-ku-xR0" secondAttribute="leading" constant="20" id="R1x-js-pAa"/>
+                        <constraint firstItem="eVS-El-9aD" firstAttribute="centerX" secondItem="Bx9-ku-xR0" secondAttribute="centerX" id="TQE-Ap-97q"/>
+                        <constraint firstItem="zBD-NM-nvw" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Bx9-ku-xR0" secondAttribute="top" constant="40" id="VAj-RO-t3t"/>
+                        <constraint firstAttribute="trailing" secondItem="zBD-NM-nvw" secondAttribute="trailing" constant="20" id="Vwz-Kn-vDB"/>
+                        <constraint firstItem="eVS-El-9aD" firstAttribute="centerY" secondItem="Bx9-ku-xR0" secondAttribute="centerY" priority="900" constant="-220" id="c8x-9P-UO7"/>
+                        <constraint firstItem="eVS-El-9aD" firstAttribute="top" secondItem="Bx9-ku-xR0" secondAttribute="top" id="xwa-Rw-re3"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="0MF-Wq-uPJ"/>
+                            <exclude reference="xwa-Rw-re3"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <mask key="constraints">
+                            <include reference="0MF-Wq-uPJ"/>
+                        </mask>
+                    </variation>
+                </view>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="Bx9-ku-xR0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="10I-ol-4rZ"/>
+                <constraint firstItem="3nu-np-Lal" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Glb-of-mrE"/>
+                <constraint firstItem="3nu-np-Lal" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Kyc-pu-ppI"/>
+                <constraint firstAttribute="trailing" secondItem="Bx9-ku-xR0" secondAttribute="trailing" id="Ltg-Dr-y8f"/>
+                <constraint firstItem="Bx9-ku-xR0" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="cfh-LU-M6y"/>
+                <constraint firstAttribute="bottom" secondItem="Bx9-ku-xR0" secondAttribute="bottom" id="q8h-9E-Blv"/>
+                <constraint firstAttribute="trailing" secondItem="3nu-np-Lal" secondAttribute="trailing" id="uxy-xo-j1h"/>
+                <constraint firstAttribute="bottom" secondItem="3nu-np-Lal" secondAttribute="bottom" id="ylG-oF-JWA"/>
+                <constraint firstItem="Bx9-ku-xR0" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="zUU-0e-4A6"/>
+            </constraints>
+        </view>
+    </objects>
+    <resources>
+        <image name="CloseButtonIphone.png" width="17" height="17"/>
+    </resources>
+</document>
