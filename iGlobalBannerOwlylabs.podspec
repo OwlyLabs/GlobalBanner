@@ -7,10 +7,16 @@ Pod::Spec.new do |s|
   s.author                = { "dfh " => "account@owlylabs.com" }
   s.platform              = :ios, '7.0'
   s.source                = { :git => "https://github.com/OwlyLabs/GlobalBanner.git", :tag => s.version.to_s }
-  s.source_files          = 'Classes/*.{h,m}'
+  s.source_files          = 'Classes/*.{h,m,mm}'
   s.public_header_files   = 'Classes/*.{h,mm}'
-  s.framework             = 'Foundation'
+  s.framework             = ["StoreKit","Foundation"]
   s.requires_arc          = true
   s.resources = ["Resources/*.png"]
   s.dependency 'iCarousel'
+
+  s.xcconfig = {
+       'WARNING_CFLAGS' => '-Wno-shorten-64-to-32 -Wno-logical-op-parentheses'
+       'CLANG_CXX_LANGUAGE_STANDARD' => 'c++11',
+       'CLANG_CXX_LIBRARY' => 'libc++'
+  }
 end
