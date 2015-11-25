@@ -95,7 +95,7 @@
         CALayer *ball = [CALayer layer];
         ball.bounds = CGRectMake(0, 0, 0 , 0);
         ball.borderWidth = self.borderWidth;
-        ball.borderColor = self.loaderColor.CGColor;
+        ball.borderColor = [UIColor colorWithRed:26.0/255.0 green:161.0/255.0 blue:163.0/255.0 alpha:1].CGColor;
         ball.opacity = self.loaderAlpha;
         
         switch (i) {

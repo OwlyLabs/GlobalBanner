@@ -9,7 +9,7 @@
 #import "NewGlobalBannerController.h"
 #import "GlobalBannerTakeImg.h"
 #import "NewGlobalBanner.h"
-#import "Settings.mm"
+#import "Settings.h"
 
 
 @implementation NewGlobalBannerController
@@ -17,7 +17,7 @@ static NewGlobalBannerController *instance = nil;
 static BOOL debug = YES;
 static NSString *plistDataFileName = @"GlobalBannerData";
 static NSString *plistCheckFileName = @"CheckGlobalBanner";
-
+static int idRecomended = 5;
 
 GlobalBannerTakeImg *globalBannerTakeImg;
 BOOL stopShow;
@@ -57,7 +57,7 @@ NSMutableData *data_responce;
 
 - (void)load {
     short device = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)?1:0;
-    NSURLRequest *requst = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/short2/rbanners?date=%@&device=%i&app_id=%i",url_owly,@"0",device,id_current_app_recommended]]];
+    NSURLRequest *requst = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/short2/rbanners?date=%@&device=%i&app_id=%i",url_owly,@"0",device,idRecomended]]];
     data_connection = [[NSURLConnection alloc] initWithRequest:requst delegate:self];
     data_responce = nil;
     if (!data_responce) {

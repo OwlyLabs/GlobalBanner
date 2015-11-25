@@ -9,7 +9,7 @@
 #import "NewGlobalBanner.h"
 #import "iCarousel.h"
 #import "PQFCirclesInTriangle.h"
-#import "Settings.mm"
+#import "Settings.h"
 #import <StoreKit/StoreKit.h>
 #import "NewGlobalBannerController.h"
 #import <SystemConfiguration/SCNetworkReachability.h>
@@ -99,7 +99,7 @@ UIViewController *bgViev;
         blurEffectView.alpha = 0.85;
         [self.backgroundView addSubview:blurEffectView];
     } else {
-        self.backgroundView.backgroundColor = RGBA(5, 5, 5, 0.55);
+        self.backgroundView.backgroundColor = [UIColor colorWithRed:5 green:5 blue:5 alpha:0.55];
     }
 }
 
@@ -149,7 +149,7 @@ UIImageView *Img;
     [view addSubview:shadow];
     
     if (arrayBanners.count>0) {
-        UIImage * imageFromWeb = [self loadImage:[NSString stringWithFormat:@"%@",[[arrayBanners objectAtIndex:index] objectForKey:@"id"]] ofType:@"png" inDirectory:[NSString stringWithFormat:@"%@/Private Documents/images/globBanner",LIBRARY]];
+        UIImage * imageFromWeb = [self loadImage:[NSString stringWithFormat:@"%@",[[arrayBanners objectAtIndex:index] objectForKey:@"id"]] ofType:@"png" inDirectory:[NSString stringWithFormat:@"%@/Private Documents/images/globBanner",[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject]]];
         
         [((UIImageView *)view) setImage:imageFromWeb];
         
@@ -209,7 +209,7 @@ SKStoreProductViewController *storeProductViewController;
     
     if (IS_IPAD) {
         bgViev = [[UIViewController alloc]init];
-        [bgViev.view setBackgroundColor:RGBA(5, 5, 5, 0.35)];
+        [bgViev.view setBackgroundColor:[UIColor colorWithRed:5 green:5 blue:5 alpha:0.35]];
         [self.view addSubview:bgViev.view];
         
         self.circlesInTriangle = [[PQFCirclesInTriangle alloc] initLoaderOnView:self.view];
@@ -233,7 +233,7 @@ SKStoreProductViewController *storeProductViewController;
         });
     } else {
         bgViev = [[UIViewController alloc]init];
-        [bgViev.view setBackgroundColor:RGBA(5, 5, 5, 0.35)];
+        [bgViev.view setBackgroundColor:[UIColor colorWithRed:5 green:5 blue:5 alpha:0.35]];
         [self.view addSubview:bgViev.view];
         
         self.circlesInTriangle = [[PQFCirclesInTriangle alloc] initLoaderOnView:self.view];

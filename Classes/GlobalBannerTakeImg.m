@@ -8,7 +8,7 @@
 
 #import "GlobalBannerTakeImg.h"
 #import "NewGlobalBannerController.h"
-#import "Settings.mm"
+#import "Settings.h"
 #include <sys/xattr.h>
 
 @interface GlobalBannerTakeImg ()
@@ -37,7 +37,7 @@ int index_img;
 
 - (void)loadImagesForBanner {
     
-    NSString*pathFolder = [NSString stringWithFormat:@"%@/Private Documents/images/globBanner/",LIBRARY];
+    NSString*pathFolder = [NSString stringWithFormat:@"%@/Private Documents/images/globBanner/",[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject]];
     arrayBanners = [NSMutableArray arrayWithArray:[[NewGlobalBannerController sharedInstance]loadPlistFlomFile:[[NewGlobalBannerController sharedInstance]getBannerDataFileName]]];
     
     NSFileManager *fm = [NSFileManager defaultManager];
@@ -83,7 +83,7 @@ int index_img;
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     UIImage *img = [UIImage imageWithData:imageData];
-    NSString*pathFolder = [NSString stringWithFormat:@"%@/Private Documents/images/globBanner/",LIBRARY];
+    NSString*pathFolder = [NSString stringWithFormat:@"%@/Private Documents/images/globBanner/",[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject]];
     [self saveImage:img withFileName:[NSString stringWithFormat:@"%@",[[arrayBanners objectAtIndex:index_img]objectForKey:@"id"]] ofType:@"png" inDirectory:pathFolder];
     
     [[NSFileManager defaultManager] removeItemAtPath: [NSString stringWithFormat:@"%@/.DS_Store",pathFolder] error: nil];
@@ -106,7 +106,7 @@ int index_img;
 }
 
 - (void)createGlobBannerImagesFolder{
-    NSString*path = [LIBRARY stringByAppendingPathComponent:@"Private Documents/images/globBanner"];
+    NSString*path = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"Private Documents/images/globBanner"];
     if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
         [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
         [self addSkipBackupAttributeToItemAtURL:[NSURL fileURLWithPath:path]];
