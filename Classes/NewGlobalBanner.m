@@ -164,15 +164,20 @@ UIImageView *Img;
 
 - (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value {
     switch (option) {
+        case iCarouselOptionWrap: {
+            return YES;
+        }
         case iCarouselOptionSpacing: {
             if (IS_IPAD) {
                 return value * 0.72f;
             } else {
                 return value * 3.12f;
             }
-        } case iCarouselOptionTilt: {
+        }
+        case iCarouselOptionTilt: {
             return value * 0.4f;
-        } default: {
+        }
+        default: {
             return value;
         }
     }
