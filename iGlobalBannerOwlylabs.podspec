@@ -7,10 +7,10 @@ Pod::Spec.new do |s|
   s.author                = { "dfh " => "account@owlylabs.com" }
   s.platform              = :ios, '7.0'
   s.source                = { :git => "https://github.com/OwlyLabs/GlobalBanner.git", :tag => s.version.to_s }
-  s.source_files          = ["Classes/*.{h,m}","Resources/*.mm"]
-  s.public_header_files   = 'Classes/*.h'
+  s.source_files          = 'Classes/*.{h,m}'
+  s.public_header_files   = 'Classes/*.{h,mm}'
   s.framework             = 'Foundation'
   s.requires_arc          = true
-  s.resources = ["Resources/*.png","Resources/*.mm"]
+  s.resources = ["Resources/*.png"]
   s.dependency 'iCarousel'
 end
