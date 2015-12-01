@@ -138,6 +138,10 @@ NSMutableData *data_responce;
     }
 }
 
+- (void)showBannerWithoutCheck {
+    [self showBannerWithPeriod:0];
+}
+
 - (float)countDaysFromLastShow {
     return (([[NSDate date] timeIntervalSince1970]-[[[arrayBannersCheck objectAtIndex:0] objectForKey:@"date"]floatValue])/(60*60*24));
 }
@@ -208,7 +212,7 @@ NSMutableData *data_responce;
     }
     
     NSArray *plistData = [NSArray arrayWithContentsOfFile:plistPath];
-
+    
     if (!plistData) {
         NSLog(@"error reading from file: %@", fileName);
         return nil;

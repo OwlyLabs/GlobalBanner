@@ -15,13 +15,13 @@
 #import <SystemConfiguration/SCNetworkReachability.h>
 
 @interface NewGlobalBanner ()
-    @property (nonatomic, strong) IBOutlet iCarousel *carousel;
-    @property (nonatomic, retain) NSMutableArray *arrayBanners;
-    @property (nonatomic, retain) IBOutlet UIView *backgroundView;
-    @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
-    @property (nonatomic, retain) IBOutlet UIButton *closeButton;
-    @property (nonatomic, strong) PQFCirclesInTriangle *circlesInTriangle;
-    @property int random;
+@property (nonatomic, strong) IBOutlet iCarousel *carousel;
+@property (nonatomic, retain) NSMutableArray *arrayBanners;
+@property (nonatomic, retain) IBOutlet UIView *backgroundView;
+@property (nonatomic, retain) IBOutlet UILabel *titleLabel;
+@property (nonatomic, retain) IBOutlet UIButton *closeButton;
+@property (nonatomic, strong) PQFCirclesInTriangle *circlesInTriangle;
+@property int random;
 @end
 
 @implementation NewGlobalBanner
@@ -62,13 +62,13 @@ UIViewController *bgViev;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-
+    
 }
 
 -(void)getBannersFromDB {
     
     arrayBanners = [NSMutableArray arrayWithArray:[[NewGlobalBannerController sharedInstance]loadPlistFlomFile:[[NewGlobalBannerController sharedInstance]getBannerDataFileName]]];
-
+    
     //random = [[SQLiteManager selectOneValueSQL:@"SELECT random_sorting FROM checkGlobalBanner WHERE id = 0"] intValue];
     
     if (random == 1) {
@@ -90,14 +90,17 @@ UIViewController *bgViev;
 - (void)setBackground {
     [self.backgroundView setBackgroundColor:[UIColor clearColor]];
     self.view.backgroundColor = [UIColor clearColor];
-    
-    if (!UIAccessibilityIsReduceTransparencyEnabled()) {
-        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-        UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-        blurEffectView.frame = self.view.bounds;
-        blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        blurEffectView.alpha = 0.85;
-        [self.backgroundView addSubview:blurEffectView];
+    if (IOS8_AND_LATER) {
+        if (!UIAccessibilityIsReduceTransparencyEnabled()) {
+            UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+            UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+            blurEffectView.frame = self.view.bounds;
+            blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            blurEffectView.alpha = 0.85;
+            [self.backgroundView addSubview:blurEffectView];
+        } else {
+            self.backgroundView.backgroundColor = [UIColor colorWithRed:5 green:5 blue:5 alpha:0.55];
+        }
     } else {
         self.backgroundView.backgroundColor = [UIColor colorWithRed:5 green:5 blue:5 alpha:0.55];
     }
@@ -269,7 +272,23 @@ SKStoreProductViewController *storeProductViewController;
     // Configure View Controller
     [storeProductViewController setDelegate:(id)self];
     
-    [storeProductViewController loadProductWithParameters:@{SKStoreProductParameterITunesItemIdentifier:idApp} completionBlock:^(BOOL result, NSError *error) {
+    
+    
+    
+    
+    NSDictionary *params;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
+        params = @{SKStoreProductParameterITunesItemIdentifier:idApp,
+                   SKStoreProductParameterAffiliateToken:@"10lqq6",
+                   SKStoreProductParameterCampaignToken:@"GLOBAL"};
+    }else{
+        params = @{SKStoreProductParameterITunesItemIdentifier:idApp};
+    }
+    
+    
+    
+    
+    [storeProductViewController loadProductWithParameters:params completionBlock:^(BOOL result, NSError *error) {
         if (error) {
             NSLog(@"Error %@ with User Info %@.", error, [error userInfo]);
             bgViev.view.alpha = 1;
@@ -303,6 +322,10 @@ SKStoreProductViewController *storeProductViewController;
             }
         }
     }];
+}
+
+- (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController {
+    [self dismissViewControllerAnimated: NO completion:nil];
 }
 
 
