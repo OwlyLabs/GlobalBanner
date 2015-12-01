@@ -55,7 +55,7 @@ int index_img;
 
 - (void) startdownload {
     if ([arrayBanners count]>index_img) {
-        [self getImageFromURL:[NSString stringWithFormat:@"%@%@",url_owly,[[arrayBanners objectAtIndex:index_img]objectForKey:@"url_img"]]];
+        [self getImageFromURL:[NSString stringWithFormat:@"%@%@",url_owly,[[arrayBanners objectAtIndex:index_img]objectForKey:(IS_IPAD)?@"url_large_img":@"url_img"]]];
     }
 }
 

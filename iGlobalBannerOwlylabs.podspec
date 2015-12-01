@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name                  = "iGlobalBannerOwlylabs"
-  s.version               = "0.0.9"
+  s.version               = "0.0.10"
   s.summary               = "Example of creating own pod. dfbsd hfg hfgj fgj"
   s.homepage              = "https://github.com/OwlyLabs/GlobalBanner.git"
   s.license               = { :type => 'MIT', :file => 'LICENSE' }
