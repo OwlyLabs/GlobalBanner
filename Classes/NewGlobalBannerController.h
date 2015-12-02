@@ -18,4 +18,5 @@
 
     - (NSString *)getBannerDataFileName;
     - (NSString *)getBannerCheckFileName;
+    - (void)showBannerWithoutCheck;
 @end

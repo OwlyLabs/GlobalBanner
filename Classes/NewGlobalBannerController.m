@@ -117,6 +117,10 @@ NSMutableData *data_responce;
     return isset;
 }
 
+- (void)showBannerWithoutCheck {
+    [self showBannerWithPeriod:0];
+}
+
 - (void)showBannerWithPeriod :(int)period {
     if (debug == YES) {
         period = 0;
@@ -136,10 +140,6 @@ NSMutableData *data_responce;
             }
         }
     }
-}
-
-- (void)showBannerWithoutCheck {
-    [self showBannerWithPeriod:0];
 }
 
 - (float)countDaysFromLastShow {
