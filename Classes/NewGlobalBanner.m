@@ -96,7 +96,7 @@ UIViewController *bgViev;
             UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
             blurEffectView.frame = self.view.bounds;
             blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            blurEffectView.alpha = 0.85;
+            blurEffectView.alpha = 1;
             [self.backgroundView addSubview:blurEffectView];
         } else {
             self.backgroundView.backgroundColor = [UIColor colorWithRed:5 green:5 blue:5 alpha:0.55];
