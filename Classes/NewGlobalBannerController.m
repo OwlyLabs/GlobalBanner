@@ -10,6 +10,8 @@
 #import "GlobalBannerTakeImg.h"
 #import "NewGlobalBanner.h"
 #import "Settings.h"
+#import "PopupLoading.h"
+
 
 
 @implementation NewGlobalBannerController
