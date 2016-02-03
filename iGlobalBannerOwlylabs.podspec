@@ -13,6 +13,4 @@ Pod::Spec.new do |s|
   s.requires_arc          = true
   s.resources = ["Resources/*.png","Resources/*.xib"]
   s.dependency 'iCarousel'
-  s.dependency 'SRActivityIndicatorView'
-  s.dependency 'HexColor'
 end
