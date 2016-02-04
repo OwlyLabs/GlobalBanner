@@ -31,7 +31,7 @@ SRActivityIndicatorView *activitiIndicator;
 
 - (void)setBackground {
     [alphaView setBackgroundColor:[UIColor clearColor]];
-    if (IOS8_AND_LATER) {
+    if (([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)) {
         if (!UIAccessibilityIsReduceTransparencyEnabled()) {
             UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
             UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
@@ -69,7 +69,7 @@ SRActivityIndicatorView *activitiIndicator;
     
     [activitiIndicator setNumberOfCircles:4];
     
-    [activitiIndicator setMaxRadius:(IS_IPAD)?6.5:5.0];
+    [activitiIndicator setMaxRadius:(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)?6.5:5.0];
     
     [activitiIndicator setInternalSpacing:3];
     
