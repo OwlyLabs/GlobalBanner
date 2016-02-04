@@ -13,7 +13,7 @@
 #import <StoreKit/StoreKit.h>
 #import "NewGlobalBannerController.h"
 #import <SystemConfiguration/SCNetworkReachability.h>
-
+#import "PopupLoading.h"
 
 
 @interface NewGlobalBanner ()
@@ -23,7 +23,7 @@
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
 @property (nonatomic, retain) IBOutlet UIButton *closeButton;
 @property (nonatomic, strong) PQFCirclesInTriangle *circlesInTriangle;
-
+@property (nonatomic, strong) PopupLoading *popupLoading;
 
 @property int random;
 @end
@@ -224,11 +224,16 @@ SKStoreProductViewController *storeProductViewController;
         [bgViev.view setBackgroundColor:[UIColor colorWithRed:5 green:5 blue:5 alpha:0.35]];
         [self.view addSubview:bgViev.view];
         
-        self.circlesInTriangle = [[PQFCirclesInTriangle alloc] initLoaderOnView:self.view];
+        /*self.circlesInTriangle = [[PQFCirclesInTriangle alloc] initLoaderOnView:self.view];
         [bgViev.view addSubview:self.circlesInTriangle];
         self.circlesInTriangle.backgroundColor = [UIColor clearColor];
         self.circlesInTriangle.center = bgViev.view.center;
         [self.circlesInTriangle show];
+        */
+        
+        self.popupLoading = [[PopupLoading alloc] initWithFrame:self.view.bounds];
+        self.popupLoading.center = bgViev.view.center;
+        [bgViev.view addSubview:self.popupLoading];
         
         
         statusOpen = true;
@@ -250,11 +255,15 @@ SKStoreProductViewController *storeProductViewController;
         [bgViev.view setBackgroundColor:[UIColor colorWithRed:5 green:5 blue:5 alpha:0.35]];
         [self.view addSubview:bgViev.view];
         
-        self.circlesInTriangle = [[PQFCirclesInTriangle alloc] initLoaderOnView:self.view];
+        /*self.circlesInTriangle = [[PQFCirclesInTriangle alloc] initLoaderOnView:self.view];
         [bgViev.view addSubview:self.circlesInTriangle];
         self.circlesInTriangle.backgroundColor = [UIColor clearColor];
         self.circlesInTriangle.center = bgViev.view.center;
-        [self.circlesInTriangle show];
+        [self.circlesInTriangle show];*/
+        
+        self.popupLoading = [[PopupLoading alloc] initWithFrame:self.view.bounds];
+        self.popupLoading.center = bgViev.view.center;
+        [bgViev.view addSubview:self.popupLoading];
         
         statusOpen = true;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
