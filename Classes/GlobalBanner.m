@@ -1,22 +1,22 @@
 //
-//  NewGlobalBanner.m
+//  GlobalBanner.m
 //  detectives
 //
 //  Created by Evgen on 17/11/15.
 //  Copyright © 2015 OwlyLabs. All rights reserved.
 //
 
-#import "NewGlobalBanner.h"
+#import "GlobalBanner.h"
 #import "iCarousel.h"
 #import "PQFCirclesInTriangle.h"
 #import "Settings.h"
 #import <StoreKit/StoreKit.h>
-#import "NewGlobalBannerController.h"
+#import "GlobalBannerController.h"
 #import <SystemConfiguration/SCNetworkReachability.h>
 #import "PopupLoading.h"
 
 
-@interface NewGlobalBanner ()
+@interface GlobalBanner ()
 @property (nonatomic, strong) IBOutlet iCarousel *carousel;
 @property (nonatomic, retain) NSMutableArray *arrayBanners;
 @property (nonatomic, retain) IBOutlet UIView *backgroundView;
@@ -24,20 +24,23 @@
 @property (nonatomic, retain) IBOutlet UIButton *closeButton;
 @property (nonatomic, strong) PQFCirclesInTriangle *circlesInTriangle;
 @property (nonatomic, strong) PopupLoading *popupLoading;
-
+@property typeLoading type_loading;
 @property int random;
 @end
 
-@implementation NewGlobalBanner
+@implementation GlobalBanner
 @synthesize arrayBanners;
 @synthesize random;
-static NewGlobalBanner *instance = nil;
+static GlobalBanner *instance = nil;
 static float animationDuration = 0.3;
+
+
+
 UIViewController *bgViev;
 
-+(NewGlobalBanner*)sharedInstance {
++(GlobalBanner*)sharedInstance {
     if (!instance) {
-        instance = [NewGlobalBanner new];
+        instance = [GlobalBanner new];
     }
     return instance;
 }
@@ -71,7 +74,7 @@ UIViewController *bgViev;
 
 -(void)getBannersFromDB {
     
-    arrayBanners = [NSMutableArray arrayWithArray:[[NewGlobalBannerController sharedInstance]loadPlistFlomFile:[[NewGlobalBannerController sharedInstance]getBannerDataFileName]]];
+    arrayBanners = [NSMutableArray arrayWithArray:[[GlobalBannerController sharedInstance]loadPlistFlomFile:[[GlobalBannerController sharedInstance]getBannerDataFileName]]];
     
     //random = [[SQLiteManager selectOneValueSQL:@"SELECT random_sorting FROM checkGlobalBanner WHERE id = 0"] intValue];
     
@@ -110,7 +113,8 @@ UIViewController *bgViev;
     }
 }
 
-- (void)showBanner {
+- (void)showBannerWithType:(typeLoading)loadingType{
+    type_loading = loadingType;
     [self getBannersFromDB];
     if ([arrayBanners count] == 0) {
         return;
@@ -224,16 +228,17 @@ SKStoreProductViewController *storeProductViewController;
         [bgViev.view setBackgroundColor:[UIColor colorWithRed:5 green:5 blue:5 alpha:0.35]];
         [self.view addSubview:bgViev.view];
         
-        /*self.circlesInTriangle = [[PQFCirclesInTriangle alloc] initLoaderOnView:self.view];
-        [bgViev.view addSubview:self.circlesInTriangle];
-        self.circlesInTriangle.backgroundColor = [UIColor clearColor];
-        self.circlesInTriangle.center = bgViev.view.center;
-        [self.circlesInTriangle show];
-        */
-        
-        self.popupLoading = [[PopupLoading alloc] initWithFrame:self.view.bounds];
-        self.popupLoading.center = bgViev.view.center;
-        [bgViev.view addSubview:self.popupLoading];
+        if (type_loading == triangleCircles) {
+            self.circlesInTriangle = [[PQFCirclesInTriangle alloc] initLoaderOnView:self.view];
+            [bgViev.view addSubview:self.circlesInTriangle];
+            self.circlesInTriangle.backgroundColor = [UIColor clearColor];
+            self.circlesInTriangle.center = bgViev.view.center;
+            [self.circlesInTriangle show];
+        }else{
+            self.popupLoading = [[PopupLoading alloc] initWithFrame:self.view.bounds];
+            self.popupLoading.center = bgViev.view.center;
+            [bgViev.view addSubview:self.popupLoading];
+        }
         
         
         statusOpen = true;
@@ -255,15 +260,18 @@ SKStoreProductViewController *storeProductViewController;
         [bgViev.view setBackgroundColor:[UIColor colorWithRed:5 green:5 blue:5 alpha:0.35]];
         [self.view addSubview:bgViev.view];
         
-        /*self.circlesInTriangle = [[PQFCirclesInTriangle alloc] initLoaderOnView:self.view];
-        [bgViev.view addSubview:self.circlesInTriangle];
-        self.circlesInTriangle.backgroundColor = [UIColor clearColor];
-        self.circlesInTriangle.center = bgViev.view.center;
-        [self.circlesInTriangle show];*/
+        if (type_loading == triangleCircles) {
+            self.circlesInTriangle = [[PQFCirclesInTriangle alloc] initLoaderOnView:self.view];
+            [bgViev.view addSubview:self.circlesInTriangle];
+            self.circlesInTriangle.backgroundColor = [UIColor clearColor];
+            self.circlesInTriangle.center = bgViev.view.center;
+            [self.circlesInTriangle show];
+        }else{
+            self.popupLoading = [[PopupLoading alloc] initWithFrame:self.view.bounds];
+            self.popupLoading.center = bgViev.view.center;
+            [bgViev.view addSubview:self.popupLoading];
+        }
         
-        self.popupLoading = [[PopupLoading alloc] initWithFrame:self.view.bounds];
-        self.popupLoading.center = bgViev.view.center;
-        [bgViev.view addSubview:self.popupLoading];
         
         statusOpen = true;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

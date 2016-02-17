@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NewGlobalBanner : UIViewController
-    - (void)showBanner;
-    +(NewGlobalBanner*)sharedInstance;
+
+@interface GlobalBanner : UIViewController
+- (void)showBannerWithType:(typeLoading)loadingType;
++(GlobalBanner*)sharedInstance;
 @end

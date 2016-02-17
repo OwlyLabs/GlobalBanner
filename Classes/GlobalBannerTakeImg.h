@@ -13,12 +13,9 @@
 -(void)finishLoadingGlobalBanner;
 @end
 
-@interface GlobalBannerTakeImg : UIViewController
-
+@interface GlobalBannerTakeImg : NSObject
 - (void)loadImagesForBanner;
-
 @property (assign) __unsafe_unretained id <GlobalBannerDelegate, UIGestureRecognizerDelegate> delegate;
-
 @property (nonatomic, retain) NSMutableData *imageData;
 
 @end

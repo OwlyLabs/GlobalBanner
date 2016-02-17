@@ -1,4 +1,9 @@
 
+typedef enum {
+    triangleCircles = 0,
+    horizontalItems = 2
+}typeLoading;
+
 #define url_owly @"http://app.owlylabs.com"
 #define mainTextColour RGB(20,200,50) //RGB(255,160,50)
 #define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)

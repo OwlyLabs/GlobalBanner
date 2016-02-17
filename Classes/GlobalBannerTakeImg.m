@@ -7,7 +7,7 @@
 //
 
 #import "GlobalBannerTakeImg.h"
-#import "NewGlobalBannerController.h"
+#import "GlobalBannerController.h"
 #import "Settings.h"
 #include <sys/xattr.h>
 
@@ -22,23 +22,10 @@
 @synthesize imageData;
 int index_img;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    return self;
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
 
 - (void)loadImagesForBanner {
-    
     NSString*pathFolder = [NSString stringWithFormat:@"%@/Private Documents/images/globBanner/",[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject]];
-    arrayBanners = [NSMutableArray arrayWithArray:[[NewGlobalBannerController sharedInstance]loadPlistFlomFile:[[NewGlobalBannerController sharedInstance]getBannerDataFileName]]];
+    arrayBanners = [NSMutableArray arrayWithArray:[[GlobalBannerController sharedInstance]loadPlistFlomFile:[[GlobalBannerController sharedInstance]getBannerDataFileName]]];
     
     NSFileManager *fm = [NSFileManager defaultManager];
     NSString *directory = pathFolder;
@@ -138,8 +125,6 @@ int index_img;
     
     [[NSFileManager defaultManager] removeItemAtPath: [NSString stringWithFormat:@"%@/.DS_Store",directoryPath] error: nil];
     NSArray * directoryContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:directoryPath error:nil];
-
-    
     
     if ([directoryContents count] == [arrayBanners count]){
         if ([self.delegate respondsToSelector:@selector(finishLoadingGlobalBanner)]) {

@@ -1,28 +1,36 @@
 //
-//  NewGlobalBannerController.m
+//  GlobalBannerController.m
 //  detectives
 //
 //  Created by Evgen on 17/11/15.
 //  Copyright © 2015 OwlyLabs. All rights reserved.
 //
 
-#import "NewGlobalBannerController.h"
+#import "GlobalBannerController.h"
 #import "GlobalBannerTakeImg.h"
-#import "NewGlobalBanner.h"
+#import "GlobalBanner.h"
 #import "Settings.h"
 #import "PopupLoading.h"
 
 
 
-@implementation NewGlobalBannerController
-static NewGlobalBannerController *instance = nil;
+@interface GlobalBannerController ()
+@property typeLoading type_loading;
+@end
+
+
+
+@implementation GlobalBannerController
+static GlobalBannerController *instance = nil;
 static BOOL debug = NO;
 static NSString *plistDataFileName = @"GlobalBannerData";
 static NSString *plistCheckFileName = @"CheckGlobalBanner";
-static int idRecomended = 5;
+
+int app_id;
+bool enabled_show;
+
 
 GlobalBannerTakeImg *globalBannerTakeImg;
-BOOL stopShow;
 NSArray *arrayBanners;
 NSArray *arrayBannersCheck;
 NSArray *arrayFromServer;
@@ -40,14 +48,26 @@ NSMutableData *data_responce;
     return plistCheckFileName;
 }
 
-+(NewGlobalBannerController*)sharedInstance{
++(GlobalBannerController*)sharedInstance{
     if (!instance) {
-        instance = [NewGlobalBannerController new];
+        instance = [GlobalBannerController new];
+        [instance setParams];
     }
     return instance;
 }
 
-- (void)checkBannerShow {
+-(void)setParams{
+    enabled_show = YES;
+    self.type_loading = horizontalItems;
+}
+
+-(void)setEnabledToShow:(BOOL)enabled{
+    enabled_show = enabled;
+}
+
+- (void)checkBannerShowWithIdApp:(int)application_id typeLoading:(typeLoading)tLoading{
+    self.type_loading = tLoading;
+    app_id = application_id;
     [self getBannerData];
     [self load];
 }
@@ -59,7 +79,7 @@ NSMutableData *data_responce;
 
 - (void)load {
     short device = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)?1:0;
-    NSURLRequest *requst = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/short2/rbanners?date=%@&device=%i&app_id=%i",url_owly,@"0",device,idRecomended]]];
+    NSURLRequest *requst = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/short2/rbanners?date=%@&device=%i&app_id=%i",url_owly,@"0",device,app_id]]];
     data_connection = [[NSURLConnection alloc] initWithRequest:requst delegate:self];
     data_responce = nil;
     if (!data_responce) {
@@ -149,9 +169,11 @@ NSMutableData *data_responce;
 }
 
 - (void)loadBanners :(int)period {
-    if (stopShow == YES) {
+    
+    if (!enabled_show) {
         return;
     }
+    
     [self updateDataInDb:period];
     if ([arrayFromServer count] > 0) {
         [self addedGlobalBanners:arrayFromServer];
@@ -161,7 +183,8 @@ NSMutableData *data_responce;
         globalBannerTakeImg.delegate = (id)self;
         [globalBannerTakeImg loadImagesForBanner];
     } else {
-        [[NewGlobalBanner sharedInstance]showBanner];
+        [[GlobalBanner sharedInstance] showBannerWithType:self.type_loading];
+        [self shareActionDidShowGlobalBaner];
     }
 }
 
@@ -171,7 +194,15 @@ NSMutableData *data_responce;
 }
 
 - (void)finishLoadingGlobalBanner {
-    [[NewGlobalBanner sharedInstance]showBanner];
+    [[GlobalBanner sharedInstance] showBannerWithType:self.type_loading];
+    [self shareActionDidShowGlobalBaner];
+}
+
+
+-(void)shareActionDidShowGlobalBaner{
+    if ([self.delegate respondsToSelector:@selector(didActionShowGlobalBanner)]) {
+        [self.delegate didActionShowGlobalBanner];
+    }
 }
 
 - (void)updateDataInDb :(int)period{
@@ -186,14 +217,6 @@ NSMutableData *data_responce;
     [self savePlistData:tmp fileName:plistCheckFileName];
 }
 
-- (void)stopShow {
-    stopShow = YES;
-}
-
-
-- (NSString*)temp {
-    return arrayBanners[0];
-}
 
 - (NSString*)pathToFile {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);

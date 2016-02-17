@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="HelveticaNeue.ttc">
@@ -13,7 +12,7 @@
         </mutableArray>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewGlobalBanner">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="GlobalBanner">
             <connections>
                 <outlet property="backgroundView" destination="3nu-np-Lal" id="gom-7W-Fbj"/>
                 <outlet property="carousel" destination="zBD-NM-nvw" id="ASm-eJ-Ahz"/>
@@ -29,7 +28,6 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3nu-np-Lal">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                    <animations/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bx9-ku-xR0">
@@ -37,7 +35,6 @@
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zBD-NM-nvw" customClass="iCarousel">
                             <rect key="frame" x="20" y="40" width="560" height="555"/>
-                            <animations/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <connections>
                                 <outlet property="dataSource" destination="-1" id="lKO-za-gs2"/>
@@ -49,7 +46,6 @@
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KmM-1R-jbG">
                                     <rect key="frame" x="318" y="0.0" width="40" height="40"/>
-                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="Rda-Fe-xDC"/>
                                         <constraint firstAttribute="width" constant="40" id="heO-yI-Isy"/>
@@ -65,7 +61,6 @@
                                 </button>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="РЕКОМЕНДУЕМ" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MRB-Pn-mA5">
                                     <rect key="frame" x="99" y="0.0" width="202" height="40"/>
-                                    <animations/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="Fgd-qR-6dr"/>
                                     </constraints>
@@ -74,7 +69,6 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
-                            <animations/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="MRB-Pn-mA5" firstAttribute="centerX" secondItem="eVS-El-9aD" secondAttribute="centerX" id="17C-Az-Flh"/>
@@ -96,7 +90,6 @@
                             </variation>
                         </view>
                     </subviews>
-                    <animations/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="eVS-El-9aD" firstAttribute="centerY" secondItem="Bx9-ku-xR0" secondAttribute="centerY" constant="-400" id="0MF-Wq-uPJ">
@@ -124,7 +117,6 @@
                     </variation>
                 </view>
             </subviews>
-            <animations/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="Bx9-ku-xR0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="10I-ol-4rZ"/>
