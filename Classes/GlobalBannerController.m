@@ -16,6 +16,7 @@
 
 @interface GlobalBannerController ()
 @property typeLoading type_loading;
+@property BOOL needHardShow;
 @end
 
 
@@ -65,7 +66,8 @@ NSMutableData *data_responce;
     enabled_show = enabled;
 }
 
-- (void)checkBannerShowWithIdApp:(int)application_id typeLoading:(typeLoading)tLoading{
+- (void)checkBannerShowWithIdApp:(int)application_id typeLoading:(typeLoading)tLoading isHardOpen:(BOOL)hard{
+    self.needHardShow = hard;
     self.type_loading = tLoading;
     app_id = application_id;
     [self getBannerData];
@@ -144,7 +146,7 @@ NSMutableData *data_responce;
 }
 
 - (void)showBannerWithPeriod :(int)period {
-    if (debug == YES) {
+    if (debug || self.needHardShow) {
         period = 0;
     }
     if (period == 0) { // period equal 0 - always show
