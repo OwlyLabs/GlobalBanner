@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Settings.h"
 
 @protocol GlobalBannerControllerDelegate <NSObject>
 -(void)didActionShowGlobalBanner;
@@ -19,6 +20,6 @@
 - (NSString *)getBannerCheckFileName;
 - (void)showBannerWithoutCheck;
 - (void)setEnabledToShow:(BOOL)enabled;
-- (void)checkBannerShowWithIdApp:(int)application_id;
+- (void)checkBannerShowWithIdApp:(int)application_id typeLoading:(typeLoading)tLoading;
 @property(assign) __unsafe_unretained id <GlobalBannerControllerDelegate> delegate;
 @end

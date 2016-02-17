@@ -114,7 +114,7 @@ UIViewController *bgViev;
 }
 
 - (void)showBannerWithType:(typeLoading)loadingType{
-    type_loading = loadingType;
+    self.type_loading = loadingType;
     [self getBannersFromDB];
     if ([arrayBanners count] == 0) {
         return;
@@ -228,7 +228,7 @@ SKStoreProductViewController *storeProductViewController;
         [bgViev.view setBackgroundColor:[UIColor colorWithRed:5 green:5 blue:5 alpha:0.35]];
         [self.view addSubview:bgViev.view];
         
-        if (type_loading == triangleCircles) {
+        if (self.type_loading == triangleCircles) {
             self.circlesInTriangle = [[PQFCirclesInTriangle alloc] initLoaderOnView:self.view];
             [bgViev.view addSubview:self.circlesInTriangle];
             self.circlesInTriangle.backgroundColor = [UIColor clearColor];
@@ -260,7 +260,7 @@ SKStoreProductViewController *storeProductViewController;
         [bgViev.view setBackgroundColor:[UIColor colorWithRed:5 green:5 blue:5 alpha:0.35]];
         [self.view addSubview:bgViev.view];
         
-        if (type_loading == triangleCircles) {
+        if (self.type_loading == triangleCircles) {
             self.circlesInTriangle = [[PQFCirclesInTriangle alloc] initLoaderOnView:self.view];
             [bgViev.view addSubview:self.circlesInTriangle];
             self.circlesInTriangle.backgroundColor = [UIColor clearColor];

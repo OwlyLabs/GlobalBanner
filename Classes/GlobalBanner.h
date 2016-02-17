@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "Settings.h"
 
 @interface GlobalBanner : UIViewController
 - (void)showBannerWithType:(typeLoading)loadingType;
