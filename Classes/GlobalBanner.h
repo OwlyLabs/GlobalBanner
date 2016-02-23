@@ -10,6 +10,7 @@
 #import "Settings.h"
 
 @interface GlobalBanner : UIViewController
-- (void)showBannerWithType:(typeLoading)loadingType;
+-(void)showBannerWithType:(typeLoading)loadingType;
+-(void)setCircleLoaderColor:(UIColor*)circleColor;
 +(GlobalBanner*)sharedInstance;
 @end

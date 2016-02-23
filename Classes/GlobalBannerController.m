@@ -17,6 +17,7 @@
 @interface GlobalBannerController ()
 @property typeLoading type_loading;
 @property BOOL needHardShow;
+@property (nonatomic, retain) UIColor *circleLoadingColor;
 @end
 
 
@@ -60,6 +61,10 @@ NSMutableData *data_responce;
 -(void)setParams{
     enabled_show = YES;
     self.type_loading = horizontalItems;
+}
+
+-(void)setCircleLoaderColor:(UIColor*)circleColor{
+    _circleLoadingColor = circleColor;
 }
 
 -(void)setEnabledToShow:(BOOL)enabled{
@@ -185,6 +190,9 @@ NSMutableData *data_responce;
         globalBannerTakeImg.delegate = (id)self;
         [globalBannerTakeImg loadImagesForBanner];
     } else {
+        if (_circleLoadingColor) {
+            [[GlobalBanner sharedInstance] setCircleLoaderColor:_circleLoadingColor];
+        }
         [[GlobalBanner sharedInstance] showBannerWithType:self.type_loading];
         [self shareActionDidShowGlobalBaner];
     }
@@ -196,6 +204,9 @@ NSMutableData *data_responce;
 }
 
 - (void)finishLoadingGlobalBanner {
+    if (_circleLoadingColor) {
+        [[GlobalBanner sharedInstance] setCircleLoaderColor:_circleLoadingColor];
+    }
     [[GlobalBanner sharedInstance] showBannerWithType:self.type_loading];
     [self shareActionDidShowGlobalBaner];
 }

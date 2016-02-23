@@ -45,7 +45,7 @@
     self.backgroundColor = [UIColor colorWithWhite:0.2 alpha:0.0];
     self.cornerRadius = 0;
     self.loaderAlpha = 1.0;
-    self.loaderColor = [UIColor redColor];
+    self.loaderColor = [UIColor colorWithRed:26.0/255.0 green:161.0/255.0 blue:163.0/255.0 alpha:1];
     self.maxDiam = 30;
     self.separation = 8.0;
     self.borderWidth = 1.5;
@@ -95,7 +95,7 @@
         CALayer *ball = [CALayer layer];
         ball.bounds = CGRectMake(0, 0, 0 , 0);
         ball.borderWidth = self.borderWidth;
-        ball.borderColor = [UIColor colorWithRed:26.0/255.0 green:161.0/255.0 blue:163.0/255.0 alpha:1].CGColor;
+        ball.borderColor = self.loaderColor.CGColor;
         ball.opacity = self.loaderAlpha;
         
         switch (i) {
@@ -145,16 +145,16 @@
         CGFloat yCenter = self.center.y;
         
         self.loaderView.frame = CGRectMake(self.loaderView.frame.origin.x, self.loaderView.frame.origin.y, self.loaderView.frame.size.width, self.loaderView.frame.size.height + self.fontSize*2);
-    
+        
         self.frame = CGRectMake(0, 0, self.frame.size.width, self.loaderView.frame.size.height + 10);
         self.center = CGPointMake(xCenter, yCenter);
         self.loaderView.center = CGPointMake(CGRectGetWidth(self.frame)/2, self.loaderView.center.y);
-    
+        
         CGFloat xPoint = CGRectGetWidth(self.loaderView.frame)/2;
         CGFloat yPoint = CGRectGetWidth(self.loaderView.frame)/2;
         self.label.center = CGPointMake(xPoint, yPoint + self.maxDiam/2 + self.fontSize/2*(self.label.numberOfLines));
         [self.loaderView addSubview:self.label];
-
+        
     }
     
 }

@@ -24,6 +24,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *closeButton;
 @property (nonatomic, strong) PQFCirclesInTriangle *circlesInTriangle;
 @property (nonatomic, strong) PopupLoading *popupLoading;
+@property (nonatomic, retain) UIColor *circleLoadingColor;
 @property typeLoading type_loading;
 @property int random;
 @end
@@ -48,6 +49,10 @@ UIViewController *bgViev;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self configView];
+}
+
+-(void)setCircleLoaderColor:(UIColor*)circleColor{
+    _circleLoadingColor = circleColor;
 }
 
 - (BOOL)isNetworkAvailable {
@@ -231,6 +236,9 @@ SKStoreProductViewController *storeProductViewController;
         if (self.type_loading == triangleCircles) {
             self.circlesInTriangle = [[PQFCirclesInTriangle alloc] initLoaderOnView:self.view];
             [bgViev.view addSubview:self.circlesInTriangle];
+            if (_circleLoadingColor) {
+                self.circlesInTriangle.loaderColor = _circleLoadingColor;
+            }
             self.circlesInTriangle.backgroundColor = [UIColor clearColor];
             self.circlesInTriangle.center = bgViev.view.center;
             [self.circlesInTriangle show];
@@ -263,6 +271,9 @@ SKStoreProductViewController *storeProductViewController;
         if (self.type_loading == triangleCircles) {
             self.circlesInTriangle = [[PQFCirclesInTriangle alloc] initLoaderOnView:self.view];
             [bgViev.view addSubview:self.circlesInTriangle];
+            if (_circleLoadingColor) {
+                self.circlesInTriangle.loaderColor = _circleLoadingColor;
+            }
             self.circlesInTriangle.backgroundColor = [UIColor clearColor];
             self.circlesInTriangle.center = bgViev.view.center;
             [self.circlesInTriangle show];
