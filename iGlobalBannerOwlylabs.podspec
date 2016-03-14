@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name                  = "iGlobalBannerOwlylabs"
-  s.version               = "0.0.20"
-  s.summary               = "Example of creating own pod. dfbsd hfg hfgj fgj"
+  s.version               = "0.0.21"
+  s.summary               = "Global banner which show some apps with able to open it inside current app"
   s.homepage              = "https://github.com/OwlyLabs/GlobalBanner.git"
   s.license               = { :type => 'MIT', :file => 'LICENSE' }
   s.author                = { "author" => "account@owlylabs.com" }

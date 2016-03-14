@@ -50,6 +50,16 @@ NSMutableData *data_responce;
     return plistCheckFileName;
 }
 
+-(void)setRootUrl:(NSString*)url{
+    self.root_url = url;
+}
+
+-(void)setSKStoreProductParameterAffiliateToken:(NSString*)affiliateToken SKStoreProductParameterCampaignToken:(NSString*)campaignToken{
+    self.affiliateToken = affiliateToken;
+    self.campaignToken = campaignToken;
+}
+
+
 +(GlobalBannerController*)sharedInstance{
     if (!instance) {
         instance = [GlobalBannerController new];
@@ -61,6 +71,8 @@ NSMutableData *data_responce;
 -(void)setParams{
     enabled_show = YES;
     self.type_loading = horizontalItems;
+    self.affiliateToken = @"";
+    self.campaignToken = @"";
 }
 
 -(void)setCircleLoaderColor:(UIColor*)circleColor{
@@ -85,8 +97,13 @@ NSMutableData *data_responce;
 }
 
 - (void)load {
+    
+    if (!self.root_url) {
+        return;
+    }
+    
     short device = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)?1:0;
-    NSURLRequest *requst = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/short2/rbanners?date=%@&device=%i&app_id=%i",url_owly,@"0",device,app_id]]];
+    NSURLRequest *requst = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/short2/rbanners?date=%@&device=%i&app_id=%i",self.root_url,@"0",device,app_id]]];
     data_connection = [[NSURLConnection alloc] initWithRequest:requst delegate:self];
     data_responce = nil;
     if (!data_responce) {
@@ -257,6 +274,40 @@ NSMutableData *data_responce;
     } else {
         return plistData;
     }
+}
+
+
+
+
+#pragma mark - Helper
+
+
+-(BOOL)is_iPad{
+    return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad);
+}
+
+-(BOOL)is_iPone{
+    return (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone);
+}
+
+-(BOOL)is_iPone6Plus{
+    return ([self is_iPone] && ([[UIScreen mainScreen] bounds].size.height == 736.0f || [[UIScreen mainScreen] bounds].size.height == 414.0f));
+}
+
+-(BOOL)is_iPone6{
+    return ([self is_iPone] && ([[UIScreen mainScreen] bounds].size.height == 667.0f || [[UIScreen mainScreen] bounds].size.height == 375.0f));
+}
+
+-(BOOL)is_iPone5{
+    return ([self is_iPone] && ([[UIScreen mainScreen] bounds].size.height == 568.0f || [[UIScreen mainScreen] bounds].size.width == 568.0f));
+}
+
+-(BOOL)is_iPone4{
+    return ([self is_iPone] && [[UIScreen mainScreen] bounds].size.height == 480.0f);
+}
+
+-(BOOL)is_ios8_and_later{
+    return ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0);
 }
 
 @end

@@ -41,8 +41,11 @@ int index_img;
 }
 
 - (void) startdownload {
+    if (![[GlobalBannerController sharedInstance] root_url]) {
+        return;
+    }
     if ([arrayBanners count]>index_img) {
-        [self getImageFromURL:[NSString stringWithFormat:@"%@%@",url_owly,[[arrayBanners objectAtIndex:index_img]objectForKey:(IS_IPAD)?@"url_large_img":@"url_img"]]];
+        [self getImageFromURL:[NSString stringWithFormat:@"%@%@",[[GlobalBannerController sharedInstance] root_url],[[arrayBanners objectAtIndex:index_img]objectForKey:([[GlobalBannerController sharedInstance] is_iPad])?@"url_large_img":@"url_img"]]];
     }
 }
 

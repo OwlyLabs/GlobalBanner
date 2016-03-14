@@ -92,17 +92,18 @@ UIViewController *bgViev;
 }
 
 - (void)configView {
-    _carousel.type = (IS_IPAD)?iCarouselTypeRotary:iCarouselTypeCoverFlow;
+    _carousel.type = ([[GlobalBannerController sharedInstance] is_iPad])?iCarouselTypeRotary:iCarouselTypeCoverFlow;
     [self setBackground];
     
-    [self.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?27:21]];
-    [self.closeButton setImage:[UIImage imageNamed:(IS_IPAD)?@"closeBanner.png":@"CloseButtonIphone.png"] forState:UIControlStateNormal];
+    [self.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:([[GlobalBannerController sharedInstance] is_iPad])?27:21]];
+    [self.closeButton setImage:[UIImage imageNamed:([[GlobalBannerController sharedInstance] is_iPad])?@"closeBanner.png":@"CloseButtonIphone.png"] forState:UIControlStateNormal];
 }
 
 - (void)setBackground {
     [self.backgroundView setBackgroundColor:[UIColor clearColor]];
     self.view.backgroundColor = [UIColor clearColor];
-    if (IOS8_AND_LATER) {
+    
+    if ([[GlobalBannerController sharedInstance] is_ios8_and_later]) {
         if (!UIAccessibilityIsReduceTransparencyEnabled()) {
             UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
             UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
@@ -146,7 +147,7 @@ UIViewController *bgViev;
 }
 
 - (void)hideStatusbar :(BOOL)status {
-    if (IS_IPHONE_4) {
+    if ([[GlobalBannerController sharedInstance] is_iPone4]) {
         [UIView animateWithDuration:0.1 animations:^{
             [[UIApplication sharedApplication] setStatusBarHidden:status];
         }];
@@ -158,10 +159,10 @@ UIViewController *bgViev;
 UIImageView *Img;
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view {
     
-    view = [[UIImageView alloc] initWithFrame:(IS_IPAD)?CGRectMake(0, 0, 400, 680):CGRectMake(0, 0, 250.0f, 425.0f)];
+    view = [[UIImageView alloc] initWithFrame:([[GlobalBannerController sharedInstance] is_iPad])?CGRectMake(0, 0, 400, 680):CGRectMake(0, 0, 250.0f, 425.0f)];
     
-    UIImageView *shadow = [[UIImageView alloc]initWithImage:[UIImage imageNamed:(IS_IPAD)?@"shadow_ipad":@"shadow_iphone"]];
-    [shadow setFrame:(IS_IPAD)?CGRectMake(-62.5, -62.5, 525, 755):CGRectMake(-34, -33.5, 318, 493)];
+    UIImageView *shadow = [[UIImageView alloc]initWithImage:[UIImage imageNamed:([[GlobalBannerController sharedInstance] is_iPad])?@"shadow_ipad":@"shadow_iphone"]];
+    [shadow setFrame:([[GlobalBannerController sharedInstance] is_iPad])?CGRectMake(-62.5, -62.5, 525, 755):CGRectMake(-34, -33.5, 318, 493)];
     [view addSubview:shadow];
     
     if (arrayBanners.count>0) {
@@ -184,7 +185,7 @@ UIImageView *Img;
             return YES;
         }
         case iCarouselOptionSpacing: {
-            if (IS_IPAD) {
+            if ([[GlobalBannerController sharedInstance] is_iPad]) {
                 return value * 0.72f;
             } else {
                 return value * 3.12f;
@@ -228,7 +229,7 @@ SKStoreProductViewController *storeProductViewController;
     __block bool statusOpen;
     statusOpen = true;
     
-    if (IS_IPAD) {
+    if ([[GlobalBannerController sharedInstance] is_iPad]) {
         bgViev = [[UIViewController alloc]init];
         [bgViev.view setBackgroundColor:[UIColor colorWithRed:5 green:5 blue:5 alpha:0.35]];
         [self.view addSubview:bgViev.view];
@@ -314,8 +315,8 @@ SKStoreProductViewController *storeProductViewController;
     NSDictionary *params;
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
         params = @{SKStoreProductParameterITunesItemIdentifier:idApp,
-                   SKStoreProductParameterAffiliateToken:@"10lqq6",
-                   SKStoreProductParameterCampaignToken:@"GLOBAL"};
+                   SKStoreProductParameterAffiliateToken:[[GlobalBannerController sharedInstance] affiliateToken],
+                   SKStoreProductParameterCampaignToken:[[GlobalBannerController sharedInstance] campaignToken]};
     }else{
         params = @{SKStoreProductParameterITunesItemIdentifier:idApp};
     }

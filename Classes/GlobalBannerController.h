@@ -23,4 +23,23 @@
 - (void)checkBannerShowWithIdApp:(int)application_id typeLoading:(typeLoading)tLoading isHardOpen:(BOOL)hard;
 @property(assign) __unsafe_unretained id <GlobalBannerControllerDelegate> delegate;
 -(void)setCircleLoaderColor:(UIColor*)circleColor;
+@property (nonatomic, retain) NSString *root_url;
+
+@property (nonatomic, retain) NSString *affiliateToken;
+@property (nonatomic, retain) NSString *campaignToken;
+
+-(void)setRootUrl:(NSString*)url;
+-(void)setSKStoreProductParameterAffiliateToken:(NSString*)affiliateToken SKStoreProductParameterCampaignToken:(NSString*)campaignToken;
+
+
+
+
+-(BOOL)is_iPad;
+-(BOOL)is_iPone;
+-(BOOL)is_iPone6Plus;
+-(BOOL)is_iPone6;
+-(BOOL)is_iPone5;
+-(BOOL)is_iPone4;
+-(BOOL)is_ios8_and_later;
+
 @end
