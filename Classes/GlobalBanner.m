@@ -213,10 +213,13 @@ int currentIndex;
 
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index {
     if (currentIndex==index) {
-        if ([[[arrayBanners objectAtIndex:index] objectForKey:@"transition_app"] length]<3) {
-        } else {
+        if ([[[arrayBanners objectAtIndex:index] objectForKey:@"transition_app"] length] > 0) {
             if ([self isNetworkAvailable]){
                 [self openAppStore:[[arrayBanners objectAtIndex:index] objectForKey:@"transition_app"]];
+            }
+        } else {
+            if ([[[arrayBanners objectAtIndex:index] objectForKey:@"url_link"] length] > 0) {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[arrayBanners objectAtIndex:index] objectForKey:@"url_link"]]];
             }
         }
     } else {
