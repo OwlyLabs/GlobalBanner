@@ -96,6 +96,15 @@ NSMutableData *data_responce;
     arrayBanners = [self loadPlistFlomFile:plistDataFileName];
 }
 
+-(void)resetShowedDate{
+    arrayBannersCheck = [self loadPlistFlomFile:plistCheckFileName];
+    if (arrayBannersCheck) {
+        if ([arrayBannersCheck count] > 0) {
+            [self updateDataInDb:[arrayBannersCheck[0][@"period"]intValue]];
+        }
+    }
+}
+
 - (void)load {
     
     if (!self.root_url) {

@@ -32,8 +32,6 @@
 -(void)setSKStoreProductParameterAffiliateToken:(NSString*)affiliateToken SKStoreProductParameterCampaignToken:(NSString*)campaignToken;
 
 
-
-
 -(BOOL)is_iPad;
 -(BOOL)is_iPone;
 -(BOOL)is_iPone6Plus;
@@ -42,4 +40,5 @@
 -(BOOL)is_iPone4;
 -(BOOL)is_ios8_and_later;
 
+-(void)resetShowedDate;
 @end
