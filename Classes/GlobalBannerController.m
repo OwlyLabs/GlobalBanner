@@ -111,8 +111,9 @@ NSMutableData *data_responce;
         return;
     }
     
+    NSString *lang = [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
     short device = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)?1:0;
-    NSURLRequest *requst = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/short2/rbanners?date=%@&device=%i&app_id=%i",self.root_url,@"0",device,app_id]]];
+    NSURLRequest *requst = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/short2/rbanners?date=%@&device=%i&app_id=%i&lang=%@",self.root_url,@"0",device,app_id,lang]]];
     data_connection = [[NSURLConnection alloc] initWithRequest:requst delegate:self];
     data_responce = nil;
     if (!data_responce) {
