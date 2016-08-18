@@ -83,6 +83,19 @@ UIViewController *bgViev;
     
     //random = [[SQLiteManager selectOneValueSQL:@"SELECT random_sorting FROM checkGlobalBanner WHERE id = 0"] intValue];
     
+    
+    random = 0;
+    NSArray *dataCheckFile = [[GlobalBannerController sharedInstance] loadPlistFlomFile:[[GlobalBannerController sharedInstance] getBannerCheckFileName]];
+    
+    if ([dataCheckFile count] > 0) {
+        NSDictionary *dicCheckData = dataCheckFile[0];
+        if (dicCheckData) {
+            if ([dicCheckData objectForKey:@"random_sorting"]) {
+                random = [dicCheckData[@"random_sorting"] intValue];
+            }
+        }
+    }
+    
     if (random == 1) {
         for (int x = 0; x < [arrayBanners count]; x++) {
             int randInt = (arc4random() % ([arrayBanners count] - x)) + x;

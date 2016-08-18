@@ -100,7 +100,7 @@ NSMutableData *data_responce;
     arrayBannersCheck = [self loadPlistFlomFile:plistCheckFileName];
     if (arrayBannersCheck) {
         if ([arrayBannersCheck count] > 0) {
-            [self updateDataInDb:[arrayBannersCheck[0][@"period"]intValue]];
+            [self updateDataInDb:arrayBannersCheck[0]];
         }
     }
 }
@@ -126,7 +126,7 @@ NSMutableData *data_responce;
 
 - (void)connection:(NSURLConnection*)connection didFailWithError:(NSError *)error {
     if ([arrayBannersCheck count]>0) {
-        [self showBannerWithPeriod:[arrayBannersCheck[0][@"period"]intValue]];
+        [self showBannerWithPeriod:arrayBannersCheck[0]];
     }
 }
 
@@ -152,13 +152,18 @@ NSMutableData *data_responce;
     
     NSArray *parentKeys = [json allKeys];
     
+    
+    if ([self checkKeyNew:@"random_sorting" inArray:parentKeys]) {
+        [self updateParamsInCheckFile:@{@"random_sorting":[json objectForKey:@"random_sorting"]}];
+    }
+    
     if ([self checkKeyNew:@"added" inArray:parentKeys]) {
         arrayFromServer = nil;
         arrayFromServer = [json objectForKey:@"added"];
-        [self showBannerWithPeriod:[[json objectForKey:@"period"]intValue]];
+        [self showBannerWithPeriod:json];
     } else {
         if ([arrayBannersCheck count] > 0) {
-            [self showBannerWithPeriod:[arrayBannersCheck[0][@"period"]intValue]];
+            [self showBannerWithPeriod:arrayBannersCheck[0]];
         }
     }
 }
@@ -177,7 +182,9 @@ NSMutableData *data_responce;
     [self showBannerWithPeriod:0];
 }
 
-- (void)showBannerWithPeriod :(int)period {
+- (void)showBannerWithPeriod:(NSDictionary*)data {
+    int period = [data[@"period"] intValue];
+    
     if (debug || self.needHardShow) {
         period = 0;
     }
@@ -185,7 +192,7 @@ NSMutableData *data_responce;
         [self loadBanners:period];
     } else {
         if ([arrayBannersCheck count] == 0) { // first load, period not equal 0 - didn't show
-            [self updateDataInDb:period];
+            [self updateDataInDb:data];
         } else {
             if ([self countDaysFromLastShow]>=period) { // time to show banner
                 [self loadBanners:period];
@@ -203,12 +210,12 @@ NSMutableData *data_responce;
 }
 
 - (void)loadBanners :(int)period {
-    
     if (!enabled_show) {
         return;
     }
     
-    [self updateDataInDb:period];
+    [self updateParamsInCheckFile:@{@"period":@(period)}];
+    
     if ([arrayFromServer count] > 0) {
         [self addedGlobalBanners:arrayFromServer];
         if (!globalBannerTakeImg) {
@@ -245,17 +252,82 @@ NSMutableData *data_responce;
     }
 }
 
-- (void)updateDataInDb :(int)period{
-    
+
+- (void)updateDataInDb:(NSDictionary*)data{
     long time =  [[NSDate date] timeIntervalSince1970];
     NSMutableArray *tmp = [NSMutableArray new];
     NSMutableDictionary *tmp_1 = [NSMutableDictionary new];
+    
+    int period = 0;
+    if (data[@"period"]) {
+        period = [data[@"period"] intValue];
+    }
+    int random_sorting = 0;
+    if (data[@"random_sorting"]) {
+        random_sorting = data[@"random_sorting"];
+    }
     [tmp_1 setValue:@(period) forKey:@"period"];
     [tmp_1 setValue:@(time) forKey:@"date"];
+    [tmp_1 setValue:@(random_sorting) forKey:@"random_sorting"];
     
     [tmp addObject:tmp_1];
     [self savePlistData:tmp fileName:plistCheckFileName];
 }
+
+
+/*- (void)updatePeriodInDb:(int)period{
+ NSArray *curData = [self loadPlistFlomFile:plistCheckFileName];
+ if (curData) {
+ if ([curData count] > 0) {
+ NSDictionary *curDic = curData[0];
+ NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithDictionary:curDic];
+ [dic setObject:@(period) forKey:@"period"];
+ [self savePlistData:@[dic] fileName:plistCheckFileName];
+ return;
+ }
+ }
+ long time =  [[NSDate date] timeIntervalSince1970];
+ NSDictionary *data = @{@"period":@(period),@"date":@(time),@"random_sorting":@"0"};
+ [self savePlistData:@[data] fileName:plistCheckFileName];
+ }*/
+
+
+- (void)updateParamsInCheckFile:(NSDictionary*)params{
+    NSArray *curData = [self loadPlistFlomFile:plistCheckFileName];
+    if (curData) {
+        if ([curData count] > 0) {
+            NSDictionary *curDic = curData[0];
+            NSMutableDictionary *dic = [[NSMutableDictionary alloc] initWithDictionary:curDic];
+            for (NSString* key in [params allKeys]) {
+                [dic setObject:params[key] forKey:key];
+            }
+            [self savePlistData:@[dic] fileName:plistCheckFileName];
+            return;
+        }
+    }
+    
+    long time =  [[NSDate date] timeIntervalSince1970];
+    
+    NSMutableDictionary *dic = [NSMutableDictionary new];
+    [dic setObject:@"0" forKey:@"period"];
+    [dic setObject:@(time) forKey:@"date"];
+    [dic setObject:@"0" forKey:@"random_sorting"];
+    for (NSString* key in [params allKeys]) {
+        [dic setObject:params[key] forKey:key];
+    }
+    [self savePlistData:@[dic] fileName:plistCheckFileName];
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 - (NSString*)pathToFile {
