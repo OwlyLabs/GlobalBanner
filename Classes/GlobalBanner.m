@@ -83,6 +83,14 @@ UIViewController *bgViev;
     
     //random = [[SQLiteManager selectOneValueSQL:@"SELECT random_sorting FROM checkGlobalBanner WHERE id = 0"] intValue];
     
+    if ([arrayBanners count] > 0) {
+        NSString *lang = [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"lang=%@",lang];
+        NSArray *tmp = [arrayBanners filteredArrayUsingPredicate:predicate];
+        [arrayBanners removeAllObjects];
+        [arrayBanners addObjectsFromArray:tmp];
+    }
+    
     
     random = 0;
     NSArray *dataCheckFile = [[GlobalBannerController sharedInstance] loadPlistFlomFile:[[GlobalBannerController sharedInstance] getBannerCheckFileName]];
