@@ -109,6 +109,9 @@ UIViewController *bgViev;
     [self setBackground];
     
     [self.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:([[GlobalBannerController sharedInstance] is_iPad])?27:21]];
+    
+    [self.titleLabel setText:[self localizedStringForKey:@"gBannerRecommendationTitle" withDefault:@"Recommended"]];
+    
     [self.closeButton setImage:[UIImage imageNamed:([[GlobalBannerController sharedInstance] is_iPad])?@"closeBanner.png":@"CloseButtonIphone.png"] forState:UIControlStateNormal];
 }
 
@@ -381,4 +384,20 @@ SKStoreProductViewController *storeProductViewController;
 }
 
 
+#pragma mark - localize
+
+
+- (NSString *)localizedStringForKey:(NSString *)key withDefault:(NSString *)defaultString
+{
+    static NSBundle *bundle = nil;
+    if (bundle == nil)
+    {
+        NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"globBanner" ofType:@"bundle"];
+        bundle = [NSBundle bundleWithPath:bundlePath] ?: [NSBundle mainBundle];
+    }
+    defaultString = [bundle localizedStringForKey:key value:defaultString table:nil];
+    return [[NSBundle mainBundle] localizedStringForKey:key value:defaultString table:nil];
+}
+
+#pragma mark -
 @end
