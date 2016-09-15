@@ -20,6 +20,8 @@
 - (NSString *)getBannerCheckFileName;
 - (void)showBannerWithoutCheck;
 - (void)setEnabledToShow:(BOOL)enabled;
+-(void)setUseDeviceLocalization:(BOOL)use;
+-(BOOL)isUseDeviceLocalization;
 - (void)checkBannerShowWithIdApp:(int)application_id typeLoading:(typeLoading)tLoading isHardOpen:(BOOL)hard;
 @property(assign) __unsafe_unretained id <GlobalBannerControllerDelegate> delegate;
 -(void)setCircleLoaderColor:(UIColor*)circleColor;

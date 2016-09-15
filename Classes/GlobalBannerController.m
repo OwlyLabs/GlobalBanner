@@ -17,6 +17,7 @@
 @interface GlobalBannerController ()
 @property typeLoading type_loading;
 @property BOOL needHardShow;
+@property BOOL useDeviceLocalization;
 @property (nonatomic, retain) UIColor *circleLoadingColor;
 @end
 
@@ -70,9 +71,17 @@ NSMutableData *data_responce;
 
 -(void)setParams{
     enabled_show = YES;
+    _useDeviceLocalization = YES;
     self.type_loading = horizontalItems;
     self.affiliateToken = @"";
     self.campaignToken = @"";
+}
+
+-(void)setUseDeviceLocalization:(BOOL)use{
+    _useDeviceLocalization = use;
+}
+-(BOOL)isUseDeviceLocalization{
+    return _useDeviceLocalization;
 }
 
 -(void)setCircleLoaderColor:(UIColor*)circleColor{
@@ -113,7 +122,11 @@ NSMutableData *data_responce;
     
     NSString *lang = [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
     short device = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)?1:0;
-    NSURLRequest *requst = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/short2/rbanners?date=%@&device=%i&app_id=%i&lang=%@",self.root_url,@"0",device,app_id,lang]]];
+    NSString *params=@"";
+    if (_useDeviceLocalization) {
+        params = [NSString stringWithFormat:@"&lang=%@",lang];
+    }
+    NSURLRequest *requst = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/short2/rbanners?date=%@&device=%i&app_id=%i%@",self.root_url,@"0",device,app_id,params]]];
     data_connection = [[NSURLConnection alloc] initWithRequest:requst delegate:self];
     data_responce = nil;
     if (!data_responce) {
