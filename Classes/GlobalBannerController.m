@@ -14,7 +14,9 @@
 
 
 
-@interface GlobalBannerController ()
+@interface GlobalBannerController (){
+    NSString *appLanguage;
+}
 @property typeLoading type_loading;
 @property BOOL needHardShow;
 @property BOOL useDeviceLocalization;
@@ -28,6 +30,7 @@ static GlobalBannerController *instance = nil;
 static BOOL debug = NO;
 static NSString *plistDataFileName = @"GlobalBannerData";
 static NSString *plistCheckFileName = @"CheckGlobalBanner";
+static NSBundle *gBanBundle = nil;
 
 int app_id;
 bool enabled_show;
@@ -115,17 +118,24 @@ NSMutableData *data_responce;
 }
 
 - (void)load {
-    
     if (!self.root_url) {
         return;
     }
-    
     NSString *lang = [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
     short device = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)?1:0;
-    NSString *params=@"";
-    if (_useDeviceLocalization) {
-        params = [NSString stringWithFormat:@"&lang=%@",lang];
+    NSString *params = [NSString stringWithFormat:@"&lang=%@",lang];;
+    
+    if (appLanguage) {
+        if (![appLanguage isEqual:[NSNull null]]) {
+            if ([appLanguage length] > 0) {
+                params = [NSString stringWithFormat:@"&lang=%@",appLanguage];
+            }
+        }
     }
+    
+    //if (_useDeviceLocalization) {
+    //}
+    
     NSURLRequest *requst = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@/short2/rbanners?date=%@&device=%i&app_id=%i%@",self.root_url,@"0",device,app_id,params]]];
     data_connection = [[NSURLConnection alloc] initWithRequest:requst delegate:self];
     data_responce = nil;
@@ -404,5 +414,41 @@ NSMutableData *data_responce;
 -(BOOL)is_ios8_and_later{
     return ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0);
 }
+
+
+
+#pragma mark - localization
+
+-(void)setLanguage:(NSString *)l
+{
+    appLanguage = l;
+    NSString *path = [[NSBundle mainBundle] pathForResource:l ofType:@"lproj" inDirectory:@"globBanner.bundle"];
+    gBanBundle = [NSBundle bundleWithPath:(!path)?[NSBundle mainBundle]:path];
+}
+
+-(NSString *)getLoclizedStringWithKey:(NSString *)key alter:(NSString *)alternate{
+    if (!gBanBundle) {
+        static NSBundle *bundle = nil;
+        if (bundle == nil)
+        {
+            NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"globBanner" ofType:@"bundle"];
+            bundle = [NSBundle bundleWithPath:bundlePath] ?: [NSBundle mainBundle];
+        }
+        alternate = [bundle localizedStringForKey:key value:alternate table:nil];
+        return [[NSBundle mainBundle] localizedStringForKey:key value:alternate table:nil];
+    }
+    /*static NSBundle *bundle = nil;
+     if (bundle == nil)
+     {
+     NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"iRateCat" ofType:@"bundle"];
+     bundle = [NSBundle bundleWithPath:bundlePath] ?: [NSBundle mainBundle];
+     }
+     defaultString = [bundle localizedStringForKey:key value:defaultString table:nil];
+     return [[NSBundle mainBundle] localizedStringForKey:key value:defaultString table:nil];*/
+    return [gBanBundle localizedStringForKey:key value:alternate table:nil];
+}
+
+
+#pragma mark -
 
 @end

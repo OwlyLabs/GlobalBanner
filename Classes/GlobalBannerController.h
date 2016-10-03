@@ -43,4 +43,6 @@
 -(BOOL)is_ios8_and_later;
 
 -(void)resetShowedDate;
+-(NSString *)getLoclizedStringWithKey:(NSString *)key alter:(NSString *)alternate;
+-(void)setLanguage:(NSString *)l;
 @end

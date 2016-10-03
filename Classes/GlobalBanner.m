@@ -402,14 +402,17 @@ SKStoreProductViewController *storeProductViewController;
 
 - (NSString *)localizedStringForKey:(NSString *)key withDefault:(NSString *)defaultString
 {
-    static NSBundle *bundle = nil;
-    if (bundle == nil)
-    {
-        NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"globBanner" ofType:@"bundle"];
-        bundle = [NSBundle bundleWithPath:bundlePath] ?: [NSBundle mainBundle];
-    }
-    defaultString = [bundle localizedStringForKey:key value:defaultString table:nil];
-    return [[NSBundle mainBundle] localizedStringForKey:key value:defaultString table:nil];
+    return [[GlobalBannerController sharedInstance] getLoclizedStringWithKey:key alter:defaultString];
+    /*
+     static NSBundle *bundle = nil;
+     if (bundle == nil)
+     {
+     NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"globBanner" ofType:@"bundle"];
+     bundle = [NSBundle bundleWithPath:bundlePath] ?: [NSBundle mainBundle];
+     }
+     defaultString = [bundle localizedStringForKey:key value:defaultString table:nil];
+     return [[NSBundle mainBundle] localizedStringForKey:key value:defaultString table:nil];
+     */
 }
 
 #pragma mark -
