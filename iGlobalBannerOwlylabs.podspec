@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.public_header_files   = 'Classes/*.{h}'
   s.framework             = ["StoreKit","Foundation"]
   s.requires_arc          = true
-  s.resources = ["Resources/*.png","Resources/*.xib","Resources/*.bundle"]
+  s.resources = ["Resources/*.png","Resources/*.xib","Resources/*.bundle","Resources/*.otf"]
   s.dependency 'iCarousel'
   s.dependency 'SRActivityIndicatorView'
   s.dependency 'SRHexColor'
