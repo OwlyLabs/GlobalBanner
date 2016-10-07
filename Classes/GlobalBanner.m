@@ -14,10 +14,11 @@
 #import "GlobalBannerController.h"
 #import <SystemConfiguration/SCNetworkReachability.h>
 #import "PopupLoading.h"
-
+#import "CCarousel.h"
+#import "DGActivityIndicatorView.h"
 
 @interface GlobalBanner ()
-@property (nonatomic, strong) IBOutlet iCarousel *carousel;
+@property (nonatomic, strong) IBOutlet CCarousel *carousel;
 @property (nonatomic, retain) NSMutableArray *arrayBanners;
 @property (nonatomic, retain) IBOutlet UIView *backgroundView;
 @property (nonatomic, retain) IBOutlet UILabel *titleLabel;
@@ -85,7 +86,7 @@ UIViewController *bgViev;
     
     
     
-    if ([arrayBanners count] > 0) {
+    if ([arrayBanners count] > 0 && NO) {
         if ([[GlobalBannerController sharedInstance] isUseDeviceLocalization]) {
             NSString *lang = [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
             NSPredicate *predicate = [NSPredicate predicateWithFormat:@"lang=%@",lang];
@@ -121,7 +122,8 @@ UIViewController *bgViev;
     _carousel.type = ([[GlobalBannerController sharedInstance] is_iPad])?iCarouselTypeRotary:iCarouselTypeCoverFlow;
     [self setBackground];
     
-    [self.titleLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:([[GlobalBannerController sharedInstance] is_iPad])?27:21]];
+    [self.titleLabel setFont:[UIFont fontWithName:@"SFUIDisplay-Regular" size:([[GlobalBannerController sharedInstance] is_iPad])?20.0:17.0]];
+    
     
     [self.titleLabel setText:[self localizedStringForKey:@"gBannerRecommendationTitle" withDefault:@"Recommended"]];
     
@@ -141,10 +143,10 @@ UIViewController *bgViev;
             blurEffectView.alpha = 1;
             [self.backgroundView addSubview:blurEffectView];
         } else {
-            self.backgroundView.backgroundColor = [UIColor colorWithRed:5 green:5 blue:5 alpha:0.55];
+            self.backgroundView.backgroundColor = [UIColor colorWithRed:5/255 green:5/255 blue:5/255 alpha:0.8];
         }
     } else {
-        self.backgroundView.backgroundColor = [UIColor colorWithRed:5 green:5 blue:5 alpha:0.55];
+        self.backgroundView.backgroundColor = [UIColor colorWithRed:5/255 green:5/255 blue:5/255 alpha:0.8];
     }
 }
 
@@ -168,6 +170,10 @@ UIViewController *bgViev;
 
 - (IBAction)close:(id)sender {
     [self hideStatusbar:NO];
+    if ([[GlobalBannerController sharedInstance].delegate respondsToSelector:@selector(didActionCloseGlobalBanner)]) {
+        [[GlobalBannerController sharedInstance].delegate didActionCloseGlobalBanner];
+    }
+    
     [UIView animateWithDuration:animationDuration animations:^{
         [self.view setAlpha:0];
     } completion:^(BOOL finished) {
@@ -183,24 +189,75 @@ UIViewController *bgViev;
     }
 }
 
+
+- (UIImage*)imageWithShadow:(UIImage*)initialImage{
+    CGColorSpaceRef colourSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef shadowContext = CGBitmapContextCreate(NULL, initialImage.size.width + 100, initialImage.size.height + 100, CGImageGetBitsPerComponent(initialImage.CGImage), 0, colourSpace, kCGImageAlphaPremultipliedLast);
+    CGColorSpaceRelease(colourSpace);
+    
+    CGContextSetShadowWithColor(shadowContext, CGSizeMake(0,0), 55, [UIColor blackColor].CGColor);
+    CGContextDrawImage(shadowContext, CGRectMake(50, 50, initialImage.size.width, initialImage.size.height), initialImage.CGImage);
+    
+    CGImageRef shadowedCGImage = CGBitmapContextCreateImage(shadowContext);
+    CGContextRelease(shadowContext);
+    
+    UIImage * shadowedImage = [UIImage imageWithCGImage:shadowedCGImage];
+    CGImageRelease(shadowedCGImage);
+    
+    return shadowedImage;
+}
+
 #pragma mark iCarousel methods
 
 UIImageView *Img;
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index reusingView:(UIView *)view {
     
-    view = [[UIImageView alloc] initWithFrame:([[GlobalBannerController sharedInstance] is_iPad])?CGRectMake(0, 0, 400, 680):CGRectMake(0, 0, 250.0f, 425.0f)];
     
-    UIImageView *shadow = [[UIImageView alloc]initWithImage:[UIImage imageNamed:([[GlobalBannerController sharedInstance] is_iPad])?@"shadow_ipad":@"shadow_iphone"]];
-    [shadow setFrame:([[GlobalBannerController sharedInstance] is_iPad])?CGRectMake(-62.5, -62.5, 525, 755):CGRectMake(-34, -33.5, 318, 493)];
-    [view addSubview:shadow];
+    CGRect rect = CGRectMake(0, 0, CGRectGetWidth([UIScreen mainScreen].bounds) - 40, CGRectGetHeight([UIScreen mainScreen].bounds) - 80);
+    //CGRectMake(0, 0, 250.0f, 425.0f)
+    //view = [[UIImageView alloc] initWithFrame:([[GlobalBannerController sharedInstance] is_iPad])?CGRectMake(0, 0, 400, 680):rect];
+    
+    
+    view = [[UIImageView alloc] init];
+    
+    //UIImageView *shadow = [[UIImageView alloc]initWithImage:[UIImage imageNamed:([[GlobalBannerController sharedInstance] is_iPad])?@"shadow_ipad":@"shadow_iphone"]];
+    
+    //shadow.frame = ([[GlobalBannerController sharedInstance] is_iPad])?CGRectMake(-62.5, -62.5, 525, 755):CGRectMake(rect.origin.x - 34, rect.origin.y - 33.5, rect.size.width + 68, rect.size.height + 67);
+    
+    
+    //[shadow setFrame:([[GlobalBannerController sharedInstance] is_iPad])?CGRectMake(-62.5, -62.5, 525, 755):CGRectMake(-34, -33.5, 318, 493)];
+    //[view addSubview:shadow];
+    
+    
     
     if (arrayBanners.count>0) {
         UIImage * imageFromWeb = [self loadImage:[NSString stringWithFormat:@"%@",[[arrayBanners objectAtIndex:index] objectForKey:@"id"]] ofType:@"png" inDirectory:[NSString stringWithFormat:@"%@/Private Documents/images/globBanner",[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) lastObject]]];
         
-        [((UIImageView *)view) setImage:imageFromWeb];
+        
+        UIImage *imgShadow = [self imageWithShadow:imageFromWeb];
+        
+        [((UIImageView *)view) setImage:imgShadow];
+        
+        CGSize sizeImg = imgShadow.size;
+        sizeImg.width = sizeImg.width / [UIScreen mainScreen].scale;
+        sizeImg.height = sizeImg.height / [UIScreen mainScreen].scale;
         
         view.contentMode = UIViewContentModeScaleAspectFit;
+        rect.size = sizeImg;
+        if (rect.size.width > CGRectGetWidth([UIScreen mainScreen].bounds) - 35) {
+            rect.size.width = CGRectGetWidth([UIScreen mainScreen].bounds) - 35;
+        }
+        if (rect.size.height > CGRectGetHeight([UIScreen mainScreen].bounds) - 80) {
+            rect.size.height = CGRectGetHeight([UIScreen mainScreen].bounds) - 80;
+        }
+        view.frame = rect;
+        
+        
+        
+        
+        //view.contentMode = UIViewContentModeScaleAspectFill;
     }
+    //view.backgroundColor = [UIColor redColor];
     return view;
 }
 
@@ -211,14 +268,24 @@ UIImageView *Img;
 - (CGFloat)carousel:(iCarousel *)carousel valueForOption:(iCarouselOption)option withDefault:(CGFloat)value {
     switch (option) {
         case iCarouselOptionWrap: {
-            return YES;
+            if ([arrayBanners count] < 3) {
+                return NO;
+            }else{
+                return YES;
+            }
         }
         case iCarouselOptionSpacing: {
-            if ([[GlobalBannerController sharedInstance] is_iPad]) {
-                return value * 0.72f;
-            } else {
-                return value * 3.12f;
+            if ([arrayBanners count] == 1) {
+                return value * 0.1;
+            }else{
+                if ([[GlobalBannerController sharedInstance] is_iPad]) {
+                    return value * 0.72f;
+                } else {
+                    return value * 2.45f;
+                    return value * 3.12f;
+                }
             }
+    
         }
         case iCarouselOptionTilt: {
             return value * 0.4f;
@@ -257,93 +324,9 @@ int currentIndex;
 
 SKStoreProductViewController *storeProductViewController;
 - (void)openAppStore: (NSString *)idApp {
-    
-    __block bool statusOpen;
-    statusOpen = true;
-    
-    if ([[GlobalBannerController sharedInstance] is_iPad]) {
-        bgViev = [[UIViewController alloc]init];
-        [bgViev.view setBackgroundColor:[UIColor colorWithRed:5 green:5 blue:5 alpha:0.35]];
-        [self.view addSubview:bgViev.view];
-        
-        if (self.type_loading == triangleCircles) {
-            self.circlesInTriangle = [[PQFCirclesInTriangle alloc] initLoaderOnView:self.view];
-            [bgViev.view addSubview:self.circlesInTriangle];
-            if (_circleLoadingColor) {
-                self.circlesInTriangle.loaderColor = _circleLoadingColor;
-            }
-            self.circlesInTriangle.backgroundColor = [UIColor clearColor];
-            self.circlesInTriangle.center = bgViev.view.center;
-            [self.circlesInTriangle show];
-        }else{
-            self.popupLoading = [[PopupLoading alloc] initWithFrame:self.view.bounds];
-            self.popupLoading.center = bgViev.view.center;
-            [bgViev.view addSubview:self.popupLoading];
-        }
-        
-        
-        statusOpen = true;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            statusOpen = false;
-            bgViev.view.alpha = 1;
-            [UIView animateWithDuration:0.2 animations:^{
-                bgViev.view.alpha = 0;
-            }];
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [bgViev removeFromParentViewController];
-                [bgViev.view removeFromSuperview];
-                
-            });
-        });
-    } else {
-        bgViev = [[UIViewController alloc]init];
-        [bgViev.view setBackgroundColor:[UIColor colorWithRed:5 green:5 blue:5 alpha:0.35]];
-        [self.view addSubview:bgViev.view];
-        
-        if (self.type_loading == triangleCircles) {
-            self.circlesInTriangle = [[PQFCirclesInTriangle alloc] initLoaderOnView:self.view];
-            [bgViev.view addSubview:self.circlesInTriangle];
-            if (_circleLoadingColor) {
-                self.circlesInTriangle.loaderColor = _circleLoadingColor;
-            }
-            self.circlesInTriangle.backgroundColor = [UIColor clearColor];
-            self.circlesInTriangle.center = bgViev.view.center;
-            [self.circlesInTriangle show];
-        }else{
-            self.popupLoading = [[PopupLoading alloc] initWithFrame:self.view.bounds];
-            self.popupLoading.center = bgViev.view.center;
-            [bgViev.view addSubview:self.popupLoading];
-        }
-        
-        
-        statusOpen = true;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            statusOpen = false;
-            bgViev.view.alpha = 1;
-            [UIView animateWithDuration:0.2 animations:^{
-                bgViev.view.alpha = 0;
-            }];
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [bgViev removeFromParentViewController];
-                [bgViev.view removeFromSuperview];
-                
-            });
-        });
-        
-    }
-    
-    // Initialize Product View Controller
+    [self showiTunesLoading:YES];
     storeProductViewController = [[SKStoreProductViewController alloc] init];
-    
-    // Configure View Controller
     [storeProductViewController setDelegate:(id)self];
-    
-    
-    
-    
-    
     NSDictionary *params;
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
         params = @{SKStoreProductParameterITunesItemIdentifier:idApp,
@@ -352,49 +335,103 @@ SKStoreProductViewController *storeProductViewController;
     }else{
         params = @{SKStoreProductParameterITunesItemIdentifier:idApp};
     }
-    
-    
-    
-    
     [storeProductViewController loadProductWithParameters:params completionBlock:^(BOOL result, NSError *error) {
         if (error) {
-            NSLog(@"Error %@ with User Info %@.", error, [error userInfo]);
-            bgViev.view.alpha = 1;
-            [UIView animateWithDuration:0.2 animations:^{
-                bgViev.view.alpha = 0;
-            }];
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [bgViev removeFromParentViewController];
-                [bgViev.view removeFromSuperview];
-                
-            });
+            [self showiTunesLoading:NO];
         } else {
+            
             // Present Store Product View Controller
-            if (statusOpen) {
-                storeProductViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                [self presentViewController:storeProductViewController animated:NO completion:nil];
-                
-                bgViev.view.alpha = 1;
-                [UIView animateWithDuration:0.2 animations:^{
-                    bgViev.view.alpha = 0;
-                }];
-                
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [bgViev removeFromParentViewController];
-                    [bgViev.view removeFromSuperview];
-                    
-                });
-            } else {
-                NSLog(@"Close timeout");
-            }
+            storeProductViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [self presentViewController:storeProductViewController animated:NO completion:^{
+                if ([[GlobalBannerController sharedInstance].delegate respondsToSelector:@selector(didShowiTunesPopup:)]) {
+                    [[GlobalBannerController sharedInstance].delegate didShowiTunesPopup:YES];
+                }
+            }];
+            [self showiTunesLoading:NO];
         }
     }];
 }
 
+
 - (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController {
     [self dismissViewControllerAnimated: NO completion:nil];
+    if ([[GlobalBannerController sharedInstance].delegate respondsToSelector:@selector(didShowiTunesPopup:)]) {
+        [[GlobalBannerController sharedInstance].delegate didShowiTunesPopup:NO];
+    }
 }
+
+
+
+-(void)showiTunesLoading:(BOOL)show{
+    if (show) {
+        if (!bgViev) {
+            bgViev = [[UIViewController alloc]init];
+            [bgViev.view setBackgroundColor:[UIColor clearColor]];
+            if (!UIAccessibilityIsReduceTransparencyEnabled()) {
+                UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+                UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+                blurEffectView.frame = self.view.bounds;
+                blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+                blurEffectView.alpha = 1;
+                [bgViev.view addSubview:blurEffectView];
+            } else {
+                bgViev.view.backgroundColor = [UIColor colorWithRed:5/255 green:5/255 blue:5/255 alpha:0.8];
+            }
+           
+            if (self.type_loading == triangleCircles) {
+                self.circlesInTriangle = [[PQFCirclesInTriangle alloc] initLoaderOnView:self.view];
+                [bgViev.view addSubview:self.circlesInTriangle];
+                if (_circleLoadingColor) {
+                    self.circlesInTriangle.loaderColor = _circleLoadingColor;
+                }
+                self.circlesInTriangle.backgroundColor = [UIColor clearColor];
+                self.circlesInTriangle.center = bgViev.view.center;
+                [self.circlesInTriangle show];
+            }else{
+                if (self.type_loading == horizontalItems) {
+                    self.popupLoading = [[PopupLoading alloc] initWithFrame:self.view.bounds];
+                    self.popupLoading.center = bgViev.view.center;
+                    [bgViev.view addSubview:self.popupLoading];
+                }else{
+                    if (self.type_loading == dGActivityIndicatorView) {
+                        DGActivityIndicatorView *activityIndicatorView = [[DGActivityIndicatorView alloc] initWithType:DGActivityIndicatorAnimationTypeBallRotate tintColor:[UIColor whiteColor] size:33.0f];
+                        activityIndicatorView.frame = CGRectMake(0.0f, 0.0f, 200.0f, 200.0f);
+                        [bgViev.view addSubview:activityIndicatorView];
+                        activityIndicatorView.center = bgViev.view.center;
+                        activityIndicatorView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin;
+                        [activityIndicatorView startAnimating];
+                    }
+                }
+            }
+        }
+        bgViev.view.alpha = 0;
+        [bgViev.view removeFromSuperview];
+        [self.view addSubview:bgViev.view];
+        [UIView animateWithDuration:0.2 animations:^{
+            bgViev.view.alpha = 1;
+        }];
+        
+    }else{
+        if (bgViev) {
+            [UIView animateWithDuration:0.2 animations:^{
+                bgViev.view.alpha = 0;
+            } completion:^(BOOL finished) {
+                [bgViev removeFromParentViewController];
+                [bgViev.view removeFromSuperview];
+                bgViev = nil;
+            }];
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
 
 
 #pragma mark - localize

@@ -11,6 +11,8 @@
 
 @protocol GlobalBannerControllerDelegate <NSObject>
 -(void)didActionShowGlobalBanner;
+-(void)didActionCloseGlobalBanner;
+-(void)didShowiTunesPopup:(BOOL)show;
 @end
 
 @interface GlobalBannerController : NSObject

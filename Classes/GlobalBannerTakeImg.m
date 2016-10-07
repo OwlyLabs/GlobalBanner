@@ -44,8 +44,14 @@ int index_img;
     if (![[GlobalBannerController sharedInstance] root_url]) {
         return;
     }
+    
+    NSString *type_img = ([[GlobalBannerController sharedInstance] is_iPad])?@"url_large_img":@"url_img";
+    if (CGRectGetWidth([UIScreen mainScreen].bounds) > 370) {
+        type_img = @"url_large_img";
+    }
+    
     if ([arrayBanners count]>index_img) {
-        [self getImageFromURL:[NSString stringWithFormat:@"%@%@",[[GlobalBannerController sharedInstance] root_url],[[arrayBanners objectAtIndex:index_img]objectForKey:([[GlobalBannerController sharedInstance] is_iPad])?@"url_large_img":@"url_img"]]];
+        [self getImageFromURL:[NSString stringWithFormat:@"%@%@",[[GlobalBannerController sharedInstance] root_url],[[arrayBanners objectAtIndex:index_img]objectForKey:type_img]]];
     }
 }
 

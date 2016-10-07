@@ -123,6 +123,10 @@ NSMutableData *data_responce;
     }
     NSString *lang = [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
     short device = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)?1:0;
+    if (CGRectGetWidth([UIScreen mainScreen].bounds) > 370) {
+        device = 1;
+    }
+    
     NSString *params = [NSString stringWithFormat:@"&lang=%@",lang];;
     
     if (appLanguage) {
@@ -132,7 +136,7 @@ NSMutableData *data_responce;
             }
         }
     }
-    
+    params = @"";
     //if (_useDeviceLocalization) {
     //}
     

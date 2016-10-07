@@ -15,4 +15,5 @@ Pod::Spec.new do |s|
   s.dependency 'iCarousel'
   s.dependency 'SRActivityIndicatorView'
   s.dependency 'SRHexColor'
+  s.dependency 'DGActivityIndicatorView'
 end
