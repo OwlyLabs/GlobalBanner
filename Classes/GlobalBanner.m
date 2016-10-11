@@ -34,7 +34,7 @@
 @synthesize arrayBanners;
 @synthesize random;
 static GlobalBanner *instance = nil;
-static float animationDuration = 0.3;
+static float animationDuration = 0.1;
 
 
 
@@ -120,19 +120,23 @@ UIViewController *bgViev;
 
 - (void)configView {
     _carousel.type = ([[GlobalBannerController sharedInstance] is_iPad])?iCarouselTypeRotary:iCarouselTypeCoverFlow;
-    [self setBackground];
+    //[self setBackground];
     
     [self.titleLabel setFont:[UIFont fontWithName:@"SFUIDisplay-Regular" size:([[GlobalBannerController sharedInstance] is_iPad])?20.0:17.0]];
     
     
     [self.titleLabel setText:[self localizedStringForKey:@"gBannerRecommendationTitle" withDefault:@"Recommended"]];
     
-    [self.closeButton setImage:[UIImage imageNamed:([[GlobalBannerController sharedInstance] is_iPad])?@"closeBanner.png":@"CloseButtonIphone.png"] forState:UIControlStateNormal];
+    [self.closeButton setImage:[UIImage imageNamed:@"closeBanner"] forState:UIControlStateNormal];
 }
 
 - (void)setBackground {
     [self.backgroundView setBackgroundColor:[UIColor clearColor]];
     self.view.backgroundColor = [UIColor clearColor];
+    
+    for (UIView *view in [self.backgroundView subviews]) {
+        [view removeFromSuperview];
+    }
     
     if ([[GlobalBannerController sharedInstance] is_ios8_and_later]) {
         if (!UIAccessibilityIsReduceTransparencyEnabled()) {
@@ -160,9 +164,13 @@ UIViewController *bgViev;
     [frontWindow setBackgroundColor:[UIColor clearColor]];
     [self.view setFrame:frontWindow.bounds];
     [self.view setAlpha:0];
+    
+    [self setBackground];
+    
     [frontWindow addSubview:self.view];
     [UIView animateWithDuration:animationDuration animations:^{
         [self.view setAlpha:1];
+        
     }];
     
     [self hideStatusbar:YES];
@@ -217,17 +225,7 @@ UIImageView *Img;
     //CGRectMake(0, 0, 250.0f, 425.0f)
     //view = [[UIImageView alloc] initWithFrame:([[GlobalBannerController sharedInstance] is_iPad])?CGRectMake(0, 0, 400, 680):rect];
     
-    
     view = [[UIImageView alloc] init];
-    
-    //UIImageView *shadow = [[UIImageView alloc]initWithImage:[UIImage imageNamed:([[GlobalBannerController sharedInstance] is_iPad])?@"shadow_ipad":@"shadow_iphone"]];
-    
-    //shadow.frame = ([[GlobalBannerController sharedInstance] is_iPad])?CGRectMake(-62.5, -62.5, 525, 755):CGRectMake(rect.origin.x - 34, rect.origin.y - 33.5, rect.size.width + 68, rect.size.height + 67);
-    
-    
-    //[shadow setFrame:([[GlobalBannerController sharedInstance] is_iPad])?CGRectMake(-62.5, -62.5, 525, 755):CGRectMake(-34, -33.5, 318, 493)];
-    //[view addSubview:shadow];
-    
     
     
     if (arrayBanners.count>0) {
@@ -285,7 +283,7 @@ UIImageView *Img;
                     return value * 3.12f;
                 }
             }
-    
+            
         }
         case iCarouselOptionTilt: {
             return value * 0.4f;
@@ -377,7 +375,7 @@ SKStoreProductViewController *storeProductViewController;
             } else {
                 bgViev.view.backgroundColor = [UIColor colorWithRed:5/255 green:5/255 blue:5/255 alpha:0.8];
             }
-           
+            
             if (self.type_loading == triangleCircles) {
                 self.circlesInTriangle = [[PQFCirclesInTriangle alloc] initLoaderOnView:self.view];
                 [bgViev.view addSubview:self.circlesInTriangle];
