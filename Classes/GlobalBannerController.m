@@ -136,7 +136,7 @@ NSMutableData *data_responce;
             }
         }
     }
-    params = @"";
+    //params = @"";
     //if (_useDeviceLocalization) {
     //}
     
