@@ -17,7 +17,12 @@
 #import "CCarousel.h"
 #import "DGActivityIndicatorView.h"
 
-@interface GlobalBanner ()
+
+
+
+@interface GlobalBanner (){
+    SKStoreProductViewController *storeProductViewController;
+}
 @property (nonatomic, strong) IBOutlet CCarousel *carousel;
 @property (nonatomic, retain) NSMutableArray *arrayBanners;
 @property (nonatomic, retain) IBOutlet UIView *backgroundView;
@@ -320,7 +325,7 @@ int currentIndex;
     }
 }
 
-SKStoreProductViewController *storeProductViewController;
+
 - (void)openAppStore: (NSString *)idApp {
     [self showiTunesLoading:YES];
     storeProductViewController = [[SKStoreProductViewController alloc] init];
