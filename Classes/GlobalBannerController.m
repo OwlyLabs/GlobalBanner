@@ -186,7 +186,21 @@ NSMutableData *data_responce;
     
     if ([self checkKeyNew:@"added" inArray:parentKeys]) {
         arrayFromServer = nil;
-        arrayFromServer = [json objectForKey:@"added"];
+        //arrayFromServer = [json objectForKey:@"added"];
+        
+        NSString *lang = [[[NSBundle mainBundle] preferredLocalizations] objectAtIndex:0];
+        
+        NSArray *tmp_array = [json objectForKey:@"added"];
+        if ([tmp_array count] > 0) {
+            NSMutableArray *tmp = [NSMutableArray new];
+            for (int i = 0; i < [tmp_array count]; i++) {
+                NSMutableDictionary *dic = [NSMutableDictionary new];
+                [dic addEntriesFromDictionary:tmp_array[i]];
+                [dic setObject:lang forKey:@"lang"];
+                [tmp addObject:dic];
+            }
+            arrayFromServer = [tmp mutableCopy];
+        }
         [self showBannerWithPeriod:json];
     } else {
         if ([arrayBannersCheck count] > 0) {
