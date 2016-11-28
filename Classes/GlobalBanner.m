@@ -176,7 +176,7 @@ UIViewController *bgViev;
         [self.view setAlpha:1];
         
     }];
-    
+    [self.carousel reloadData];
     [self hideStatusbar:YES];
 }
 
