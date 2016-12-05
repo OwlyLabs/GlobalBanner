@@ -164,6 +164,9 @@ UIViewController *bgViev;
     if ([arrayBanners count] == 0) {
         return;
     }
+    if ([[GlobalBannerController sharedInstance].delegate respondsToSelector:@selector(didActionShowGlobalBanner)]) {
+        [[GlobalBannerController sharedInstance].delegate didActionShowGlobalBanner];
+    }
     UIWindow *frontWindow = [[[UIApplication sharedApplication] delegate] window];
     [frontWindow setBackgroundColor:[UIColor clearColor]];
     [self.view setFrame:frontWindow.bounds];

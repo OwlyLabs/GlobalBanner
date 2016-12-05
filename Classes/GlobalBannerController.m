@@ -269,7 +269,7 @@ NSMutableData *data_responce;
             [[GlobalBanner sharedInstance] setCircleLoaderColor:_circleLoadingColor];
         }
         [[GlobalBanner sharedInstance] showBannerWithType:self.type_loading];
-        [self shareActionDidShowGlobalBaner];
+        //[self shareActionDidShowGlobalBaner];
     }
 }
 
