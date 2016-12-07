@@ -181,6 +181,7 @@ UIViewController *bgViev;
     }];
     [self.carousel reloadData];
     [self hideStatusbar:YES];
+    [[GlobalBannerController sharedInstance] resetShowedDate];
 }
 
 - (IBAction)close:(id)sender {
