@@ -441,7 +441,7 @@ NSMutableData *data_responce;
 {
     appLanguage = l;
     NSString *path = [[NSBundle mainBundle] pathForResource:l ofType:@"lproj" inDirectory:@"globBanner.bundle"];
-    gBanBundle = [NSBundle bundleWithPath:(!path)?[NSBundle mainBundle]:path];
+    gBanBundle = (!path)?[NSBundle mainBundle]:[NSBundle bundleWithPath:path];
 }
 
 -(NSString *)getLoclizedStringWithKey:(NSString *)key alter:(NSString *)alternate{
